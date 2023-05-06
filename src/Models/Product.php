@@ -9,6 +9,6 @@ class Product extends DataLayer
      public function __construct() 
      {
          //Instancia o construtor da Classe pai (DataLayer)
-         parent::__construct("produtos", ["nome", "preco", "quantidade"], "codigo_produto", true);
+         parent::__construct("produtos", ["nome", "preco", "quantidade"], "codigo_produto", false);
      }
 }

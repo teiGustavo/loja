@@ -42,7 +42,7 @@
         </a>
         <ul class="nav nav-treeview" style="display: none;">
             <li class="nav-item">
-            <a href="produtos.php" class="nav-link">
+            <a href="<?= $router->route("loja.produtos") ?>" class="nav-link">
                 <i class="nav-icon fas fa-bars"></i>
                 <p>Listar</p>
             </a>

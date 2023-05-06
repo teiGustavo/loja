@@ -23,7 +23,7 @@
   <div class="wrapper">
 
     <?php
-    include __DIR__ . "/partials/menus.php";
+      include __DIR__ . "/partials/menus.php";
     ?>
 
     <!-- Content Wrapper. Contains page content -->
@@ -72,7 +72,7 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body table-responsive p-0">
-                  <table class="table table-hover text-nowrap">
+                  <table class="table table-hover text-nowrap" id="categoriesTable">
                     <thead>
                       <tr>
                         <th>Nome</th>
@@ -85,8 +85,8 @@
                         $numCategories = sizeof($categories);
 
                         foreach ($categories as $category) {
-                          echo "<tr>";
-                            echo "<td>";
+                          echo "<tr id=category" . $category->codigo_categoria . ">";
+                            echo "<td id=" . "categoryName" . $category->codigo_categoria . ">";
                                 echo $category->nome;
                             echo "</td>";
 
@@ -95,13 +95,12 @@
                             echo "</td>";
 
                             echo "<td>";
-                                echo "<button type='button' class='btn btn-secondary btn-sm'><i class='nav-icon fas fa-edit'></i>Editar</button>";
-                                echo "<button type='button' class='btn btn-danger btn-sm' style='margin-left: 0.25rem;'><i class='nav-icon fas fa-trash'></i>Excluir</button>";
+                                echo "<button type='button' id='btnEditar' value=" . $category->codigo_categoria . " class='btn btn-secondary btn-sm' data-toggle='modal' data-target='#modal-edit-categoria'><i class='nav-icon fas fa-edit'></i>Editar</button>";
+                                echo "<button type='button' id='btnExcluir' value=" . $category->codigo_categoria . " class='btn btn-danger btn-sm' style='margin-left: 0.25rem;'><i class='nav-icon fas fa-trash' style='margin-right: 0.1rem;'></i>Excluir</button>";
                             echo "</td>";
                           echo "</tr>";
                         }
                       ?>
-
                     </tbody>
                   </table>
                 </div>
@@ -132,7 +131,7 @@
                   </div>
                 </div>
                 <div class="modal-footer justify-content-between">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                  <button type="button" id="closeModal" class="btn btn-default" data-dismiss="modal">Fechar</button>
                   <button type="submit" class="btn btn-success" id="btn_salvar_categoria_add">Salvar</button>
                 </div>
               </form>
@@ -162,7 +161,7 @@
                   </div>
                 </div>
                 <div class="modal-footer justify-content-between">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                  <button type="button" class="btn btn-default" id="btn_fechar_categoria_edit" data-dismiss="modal">Fechar</button>
                   <button type="submit" class="btn btn-success" id="btn_salvar_categoria_edit">Salvar</button>
                 </div>
               </form>
@@ -207,5 +206,103 @@
   <script src="<?= url("/views/assets/js/categorias.js"); ?>"></script>
 
 </body>
+
+<script>
+  function addCategory(name) {
+    var d = new Date();
+    day = d.getDate();
+    month = (d.getMonth()) + 1;
+    year = d.getFullYear();
+
+    if (day <= 9) {
+      day = "0" + day;
+    }
+
+    if (month <= 9) {
+      month = "0" + month;
+    }
+    
+    nowDate = day + "/" + month + "/" + year; 
+
+    buttons = "<button type='button' class='btn btn-secondary btn-sm'><i class='nav-icon fas fa-edit'></i>Editar</button>" +
+              "<button type='button' id='btnExcluir' class='btn btn-danger btn-sm' style='margin-left: 0.25rem;'><i class='nav-icon fas fa-trash' style='margin-right: 0.1rem;'></i>Excluir</button>";
+
+
+    category = "<tr id=" + name + " style='display: none;'>" + 
+                  "<td>" + name + "</td>" + 
+                  "<td>" + nowDate + "</td>" + 
+                  "<td>" + buttons + "</td>" + 
+              "</tr>";
+
+    $("#categoriesTable tbody").append(category);
+
+    $("#" + name).fadeIn(500);
+
+    $("#closeModal").trigger("click");
+  }
+
+  function removeCategory(id) {
+    $("#category" + id).hide(1000);
+  }
+
+  //Formulário responsável por adicionar uma categoria
+  $("#form_add_categoria").submit(function(event) {
+    event.preventDefault();
+
+    addCategory($("#nome_categoria_add").val());
+
+    $.ajax({
+      url: "<?= $router->route("loja.cadastrar.categoria"); ?>",
+      dataType: "json",
+      type: "POST",
+      data: {
+        name: $("#nome_categoria_add").val()
+      }
+    });
+  });
+
+  //Botao de excluir categorias
+  $("body").on("click", "#btnExcluir", function() {
+    removeCategory($(this).val());
+
+    $.ajax({
+      url: "<?= $router->route("loja.excluir.categoria"); ?>",
+      dataType: "json",
+      type: "POST",
+      data: {
+        id: $(this).val()
+      }
+    });
+  });
+
+  function modifyCategory(id, name) {
+    id = "categoryName" + id;
+
+    $("#" + id).text(name);
+    $("#btn_fechar_categoria_edit").trigger("click");
+  }
+
+  //Botao de editar categorias
+  $("body").on("click", "#btnEditar", function() {
+    id = $(this).val();
+
+    //Formulário responsável por editar uma categoria
+    $("#form_edit_categoria").submit(function(event) {
+      event.preventDefault();
+
+      modifyCategory(id, $("#nome_categoria_edit").val());
+
+      $.ajax({
+        url: "<?= $router->route("loja.editar.categoria"); ?>",
+        dataType: "json",
+        type: "POST",
+        data: {
+          id: id,
+          name: $("#nome_categoria_edit").val()
+        }
+      });
+    });
+  });
+</script>
 
 </html>

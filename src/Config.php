@@ -17,7 +17,7 @@ const DATA_LAYER_CONFIG = [
 ];
 
 //Constante de URL base do site
-const URL_BASE = "http://localhost/GustavoT/SITE";
+const URL_BASE = "http://localhost/loja";
 
 function url(string $path): string
 {
