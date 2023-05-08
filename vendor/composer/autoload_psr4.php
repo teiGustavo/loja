@@ -6,8 +6,10 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Uptodown\\RandomUsernameGenerator\\' => array($vendorDir . '/uptodown/random-username-generator/src'),
     'Loja\\' => array($baseDir . '/src'),
     'League\\Plates\\' => array($vendorDir . '/league/plates/src'),
+    'Hackzilla\\PasswordGenerator\\' => array($vendorDir . '/hackzilla/password-generator'),
     'CoffeeCode\\Router\\' => array($vendorDir . '/coffeecode/router/src'),
     'CoffeeCode\\DataLayer\\' => array($vendorDir . '/coffeecode/datalayer/src'),
 );

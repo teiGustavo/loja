@@ -10,6 +10,7 @@ $router = new Router(URL_BASE);
 $router->namespace("Loja\Controllers");
 
 $router->get("/", "HomeController:index", "loja.home");
+$router->get("/testes", "HomeController:testes", "loja.testes");
 
 $router->group("produtos");
 $router->get("/", "ProductController:index", "loja.produtos");
@@ -26,8 +27,21 @@ $router->post("/update", "CategoryController:editCategory", "loja.editar.categor
 
 $router->group("clientes");
 $router->get("/", "CustomerController:index", "loja.clientes");
+$router->post("/create", "CustomerController:createCustomer", "loja.cadastrar.cliente");
+$router->post("/delete", "CustomerController:deleteCustomer", "loja.excluir.cliente");
+$router->post("/update", "CustomerController:updateCustomer", "loja.editar.cliente");
 
-//$router->get("/pagamento", "CustomerController:index", "loja.formapagamento");
+$router->group("vendas");
+$router->get("/", "OrderController:index", "loja.vendas");
+$router->post("/create", "OrderController:createOrder", "loja.cadastrar.venda");
+$router->post("/delete", "OrderController:deleteOrder", "loja.excluir.venda");
+$router->post("/update", "OrderController:updateOrder", "loja.editar.venda");
+
+$router->group("formaspgto");
+$router->get("/", "PaymentController:index", "loja.formaspgto");
+$router->post("/create", "PaymentController:createPayment", "loja.cadastrar.formapgto");
+$router->post("/delete", "PaymentController:deletePayment", "loja.excluir.formapgto");
+$router->post("/update", "PaymentController:updatePayment", "loja.editar.formapgto");
 
 //Responsável por despachar as rotas
 $router->dispatch();

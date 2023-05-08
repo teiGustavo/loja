@@ -11,10 +11,18 @@ class ComposerStaticInit110122f6a875e2eafd12f6f0cb7fc6a2
     );
 
     public static $prefixLengthsPsr4 = array (
+        'U' => 
+        array (
+            'Uptodown\\RandomUsernameGenerator\\' => 33,
+        ),
         'L' => 
         array (
             'Loja\\' => 5,
             'League\\Plates\\' => 14,
+        ),
+        'H' => 
+        array (
+            'Hackzilla\\PasswordGenerator\\' => 28,
         ),
         'C' => 
         array (
@@ -24,6 +32,10 @@ class ComposerStaticInit110122f6a875e2eafd12f6f0cb7fc6a2
     );
 
     public static $prefixDirsPsr4 = array (
+        'Uptodown\\RandomUsernameGenerator\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/uptodown/random-username-generator/src',
+        ),
         'Loja\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
@@ -31,6 +43,10 @@ class ComposerStaticInit110122f6a875e2eafd12f6f0cb7fc6a2
         'League\\Plates\\' => 
         array (
             0 => __DIR__ . '/..' . '/league/plates/src',
+        ),
+        'Hackzilla\\PasswordGenerator\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/hackzilla/password-generator',
         ),
         'CoffeeCode\\Router\\' => 
         array (

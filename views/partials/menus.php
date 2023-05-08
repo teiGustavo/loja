@@ -19,7 +19,7 @@
 <!-- Brand Logo -->
 <a href="<?= $router->route("loja.home") ?>" class="brand-link">
     <img src="<?= url("/views/assets/img/AdminLTELogo.png"); ?>" alt="Nossa Loja" class="brand-image img-circle elevation-3" style="opacity: .8">
-    <span class="brand-text font-weight-light">Nossa Loja</span>
+    <span class="brand-text font-weight-light"><?= $title_prefix; ?></span>
 </a>
 
 <!-- Sidebar -->
@@ -71,7 +71,7 @@
         </li>
 
         <li class="nav-item">
-        <a href="<?= $router->route("loja.formapagamento") ?>" class="nav-link">
+        <a href="<?= $router->route("loja.formaspgto") ?>" class="nav-link">
             <i class="nav-icon fas fa-money-bill"></i>
             <p>Formas de Pagamento</p>
         </a>

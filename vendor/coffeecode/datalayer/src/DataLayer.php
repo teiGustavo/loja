@@ -370,4 +370,22 @@ abstract class DataLayer
         $camelCase[0] = strtolower($camelCase[0]);
         return $camelCase;
     }
+
+    /**
+     * @param string|null $terms
+     * @param string|null $params
+     * @param string $columns
+     * @return DataLayer
+     */
+    public function otherFind(string $columns = "*", ?string $from = null, ?string $terms = null, ?string $params = null): DataLayer
+    {
+        if ($terms) {
+            $this->statement = "SELECT {$columns} FROM {$from} WHERE {$terms}";
+            parse_str($params ?? "", $this->params);
+            return $this;
+        }
+
+        $this->statement = "SELECT {$columns} FROM {$from}";
+        return $this;
+    }
 }

@@ -6,7 +6,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Nossa Loja | Categorias de Produtos</title>
+  <title>
+    <?= $title_prefix; ?> | Categorias de Produtos
+  </title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet"
@@ -23,7 +25,7 @@
   <div class="wrapper">
 
     <?php
-      include __DIR__ . "/partials/menus.php";
+    include __DIR__ . "/partials/menus.php";
     ?>
 
     <!-- Content Wrapper. Contains page content -->
@@ -81,26 +83,29 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <?php
-                        $numCategories = sizeof($categories);
+                      <?php foreach ($categories as $category):
+                        ?>
 
-                        foreach ($categories as $category) {
-                          echo "<tr id=category" . $category->codigo_categoria . ">";
-                            echo "<td id=" . "categoryName" . $category->codigo_categoria . ">";
-                                echo $category->nome;
-                            echo "</td>";
+                        <tr id="category<?= $category->codigo_categoria; ?>">
+                          <td id="categoryName<?= $category->codigo_categoria; ?>">
+                            <?= $category->nome; ?>
+                          </td>
 
-                            echo "<td>";
-                                echo $category->data_cadastro;
-                            echo "</td>";
+                          <td>
+                            <?= $category->data_cadastro; ?>
+                          </td>
 
-                            echo "<td>";
-                                echo "<button type='button' id='btnEditar' value=" . $category->codigo_categoria . " class='btn btn-secondary btn-sm' data-toggle='modal' data-target='#modal-edit-categoria'><i class='nav-icon fas fa-edit'></i>Editar</button>";
-                                echo "<button type='button' id='btnExcluir' value=" . $category->codigo_categoria . " class='btn btn-danger btn-sm' style='margin-left: 0.25rem;'><i class='nav-icon fas fa-trash' style='margin-right: 0.1rem;'></i>Excluir</button>";
-                            echo "</td>";
-                          echo "</tr>";
-                        }
-                      ?>
+                          <td>
+                            <button type='button' id='btnEditar' value="<?= $category->codigo_categoria; ?>"
+                              class='btn btn-secondary btn-sm' data-toggle='modal' data-target='#modal-edit-categoria'><i
+                                class='nav-icon fas fa-edit'></i>Editar</button>
+                            <button type='button' id='btnExcluir' value="<?= $category->codigo_categoria; ?>"
+                              class='btn btn-danger btn-sm' style='margin-left: 0.25rem;'><i class='nav-icon fas fa-trash'
+                                style='margin-right: 0.1rem;'></i>Excluir</button>
+                          </td>
+                        </tr>
+                        
+                      <?php endforeach; ?>
                     </tbody>
                   </table>
                 </div>
@@ -157,11 +162,12 @@
                   <div class="form-group">
                     <label for="nome_categoria_edit">Nome</label>
                     <input type="text" class="form-control" id="nome_categoria_edit" value="" autofocus>
-                    <input type="hidden" id="codigo_categoria_edit" value="">
+                    <input type="hidden" id="nome_categoria_edit" value="">
                   </div>
                 </div>
                 <div class="modal-footer justify-content-between">
-                  <button type="button" class="btn btn-default" id="btn_fechar_categoria_edit" data-dismiss="modal">Fechar</button>
+                  <button type="button" class="btn btn-default" id="btn_fechar_categoria_edit"
+                    data-dismiss="modal">Fechar</button>
                   <button type="submit" class="btn btn-success" id="btn_salvar_categoria_edit">Salvar</button>
                 </div>
               </form>
@@ -208,8 +214,8 @@
 </body>
 
 <script>
-  function addCategory(name) {
-    var d = new Date();
+  function getNowDate() {
+    d = new Date();
     day = d.getDate();
     month = (d.getMonth()) + 1;
     year = d.getFullYear();
@@ -221,18 +227,24 @@
     if (month <= 9) {
       month = "0" + month;
     }
-    
-    nowDate = day + "/" + month + "/" + year; 
+
+    nowDate = day + "/" + month + "/" + year;
+
+    return nowDate;
+  }
+
+  function addCategory(name) {
+    nowDate = getNowDate();
 
     buttons = "<button type='button' class='btn btn-secondary btn-sm'><i class='nav-icon fas fa-edit'></i>Editar</button>" +
-              "<button type='button' id='btnExcluir' class='btn btn-danger btn-sm' style='margin-left: 0.25rem;'><i class='nav-icon fas fa-trash' style='margin-right: 0.1rem;'></i>Excluir</button>";
+      "<button type='button' id='btnExcluir' class='btn btn-danger btn-sm' style='margin-left: 0.25rem;'><i class='nav-icon fas fa-trash' style='margin-right: 0.1rem;'></i>Excluir</button>";
 
 
-    category = "<tr id=" + name + " style='display: none;'>" + 
-                  "<td>" + name + "</td>" + 
-                  "<td>" + nowDate + "</td>" + 
-                  "<td>" + buttons + "</td>" + 
-              "</tr>";
+    category = "<tr id=" + name + " style='display: none;'>" +
+      "<td>" + name + "</td>" +
+      "<td>" + nowDate + "</td>" +
+      "<td>" + buttons + "</td>" +
+      "</tr>";
 
     $("#categoriesTable tbody").append(category);
 
@@ -246,7 +258,7 @@
   }
 
   //Formulário responsável por adicionar uma categoria
-  $("#form_add_categoria").submit(function(event) {
+  $("#form_add_categoria").submit(function (event) {
     event.preventDefault();
 
     addCategory($("#nome_categoria_add").val());
@@ -262,7 +274,7 @@
   });
 
   //Botao de excluir categorias
-  $("body").on("click", "#btnExcluir", function() {
+  $("body").on("click", "#btnExcluir", function () {
     removeCategory($(this).val());
 
     $.ajax({
@@ -283,11 +295,14 @@
   }
 
   //Botao de editar categorias
-  $("body").on("click", "#btnEditar", function() {
+  $("body").on("click", "#btnEditar", function () {
     id = $(this).val();
 
+    nameVal = $("#categoryName" + id).text();
+    $("#nome_categoria_edit").val(nameVal.trim());
+
     //Formulário responsável por editar uma categoria
-    $("#form_edit_categoria").submit(function(event) {
+    $("#form_edit_categoria").submit(function (event) {
       event.preventDefault();
 
       modifyCategory(id, $("#nome_categoria_edit").val());

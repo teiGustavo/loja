@@ -37,7 +37,7 @@ class CategoryController extends MainController
 
     public function deleteCategory(array $data): void
     {
-        $categoryId = filter_var($data["id"], FILTER_VALIDATE_INT);
+        $categoryId = filter_var($data["id"], FILTER_SANITIZE_NUMBER_INT);
 
         $category = (new Category())->findById($categoryId);
         $category->destroy();
@@ -45,7 +45,7 @@ class CategoryController extends MainController
 
     public function editCategory(array $data): void
     {
-        $categoryId = filter_var($data["id"], FILTER_VALIDATE_INT);
+        $categoryId = filter_var($data["id"], FILTER_SANITIZE_NUMBER_INT);
         $categoryName = filter_var($data["name"], FILTER_SANITIZE_STRING);
 
         $category = (new Category())->findById($categoryId);

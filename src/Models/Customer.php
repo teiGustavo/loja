@@ -9,6 +9,6 @@ class Customer extends DataLayer
      public function __construct() 
      {
          //Instancia o construtor da Classe pai (DataLayer)
-         parent::__construct("clientes", ["nome", "email", "usuario", "senha", "datanasc"], "cpf", false);
+         parent::__construct("customers", ["cpf", "nome", "email", "usuario", "senha"], "id", false);
      }
 }

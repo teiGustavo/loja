@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Nossa Loja | Painel de Controle</title>
+  <title><?= $title_prefix; ?> | Painel de Controle</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -53,14 +53,14 @@
             <!-- small box -->
             <div class="small-box bg-info">
               <div class="inner">
-                <h3>0</h3>
+                <h3><?= $ordersQuantity != "" ? $ordersQuantity : "0"; ?></h3>
 
                 <p>Vendas</p>
               </div>
               <div class="icon">
                 <i class="ion ion-bag"></i>
               </div>
-              <a href="#" class="small-box-footer">Ver mais <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="<?= $router->route("loja.vendas"); ?>" class="small-box-footer">Ver mais <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -68,14 +68,14 @@
             <!-- small box -->
             <div class="small-box bg-success">
               <div class="inner">
-                <h3>0</h3>
+                <h3><?= $productsQuantity != "" ? $productsQuantity : "0"; ?></h3>
 
                 <p>Produtos Cadastrados</p>
               </div>
               <div class="icon">
                 <i class="ion ion-stats-bars"></i>
               </div>
-              <a href="#" class="small-box-footer">Ver mais <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="<?= $router->route("loja.produtos"); ?>" class="small-box-footer">Ver mais <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -83,14 +83,14 @@
             <!-- small box -->
             <div class="small-box bg-warning">
               <div class="inner">
-                <h3>0</h3>
+                <h3><?= $customersQuantity != "" ? $customersQuantity : "0"; ?></h3>
 
                 <p>Clientes</p>
               </div>
               <div class="icon">
                 <i class="ion ion-person-add"></i>
               </div>
-              <a href="#" class="small-box-footer">Ver mais <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="<?= $router->route("loja.clientes"); ?>" class="small-box-footer">Ver mais <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -98,7 +98,7 @@
             <!-- small box -->
             <div class="small-box bg-danger">
               <div class="inner">
-                <h3>R$ 0.00</h3>
+                <h3><?= $monthIncomes != "" ? $monthIncomes : "R$ 0,00"; ?></h3>
 
                 <p>Receita do mês</p>
               </div>
