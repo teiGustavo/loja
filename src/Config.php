@@ -17,7 +17,7 @@ const DATA_LAYER_CONFIG = [
 ];
 
 //Constante de URL base do site
-const URL_BASE = "http://localhost/loja";
+const URL_BASE = "http://localhost/GustavoT/loja";
 
 //Constante de Título base do site
 const TITLE_PREFIX = "ThirdEye";

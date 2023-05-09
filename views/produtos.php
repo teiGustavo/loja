@@ -282,7 +282,28 @@
   PRICE.mask("000.000.000.000.000,00", { reverse: true });
   PRICE_EDIT.mask("000.000.000.000.000,00", { reverse: true });
 
+  function getNowDate() {
+    d = new Date();
+    day = d.getDate();
+    month = (d.getMonth()) + 1;
+    year = d.getFullYear();
+
+    if (day <= 9) {
+      day = "0" + day;
+    }
+
+    if (month <= 9) {
+      month = "0" + month;
+    }
+
+    nowDate = day + "/" + month + "/" + year;
+
+    return nowDate;
+  }
+
   function addProduct(name, price, qtd, category) {
+    nowDate =getNowDate();
+
     buttons = "<button type='button' class='btn btn-secondary btn-sm'><i class='nav-icon fas fa-edit'></i>Editar</button>" +
       "<button type='button' id='btnExcluir' class='btn btn-danger btn-sm' style='margin-left: 0.2rem;'><i class='nav-icon fas fa-trash' style='margin-right: 0.1rem;'></i>Excluir</button>";
 
@@ -290,7 +311,7 @@
       "<td>" + name + "</td>" +
       "<td>" + "R$ " + price + "</td>" +
       "<td>" + qtd + "</td>" +
-      "<td>" + "00/00/0000" + "</td>" +
+      "<td>" + nowDate + "</td>" +
       "<td>" + buttons + "</td>" +
       "</tr>";
 
@@ -299,6 +320,11 @@
     $("#closeModal").trigger("click");
 
     $("#" + name).fadeIn(500);
+
+    NAME.val("");
+    PRICE.val("");
+    QUANTITY.val("");
+    CATEGORY.val("");
   }
 
   //Formulário responsável por adicionar um produto

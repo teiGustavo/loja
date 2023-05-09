@@ -60,7 +60,9 @@ class ProductController extends MainController
         $product->preco = $productPreco;
         $product->quantidade = $productQuantidade;
         $product->categoria = $productCategoria;
-        $product->save();
+        
+        if (!$product->save())
+            echo json_encode($product->fail()->getMessage());
     }
 
     public function deleteProduct(array $data): void
@@ -68,7 +70,9 @@ class ProductController extends MainController
         $productId = filter_var($data["id"], FILTER_SANITIZE_NUMBER_INT);
 
         $product = (new product())->findById($productId);
-        $product->destroy();
+
+        if (!$product->destroy())
+            echo json_encode($product->fail()->getMessage());
     }
 
     public function updateProduct(array $data): void
@@ -87,6 +91,8 @@ class ProductController extends MainController
         $product->preco = $productPreco;
         $product->quantidade = $productQuantidade;
         $product->categoria = $productCategoria;
-        $product->save();
+
+        if (!$product->save())
+            echo json_encode($product->fail()->getMessage());
     }
 }

@@ -152,7 +152,7 @@
                   </div>
                   <div class="form-group">
                     <label for="nome_venda">Número de Parcelas</label>
-                    <input type="number" class="form-control" id="numero_parcelas_venda_add" placeholder="Informe a quantidade de parcelas">
+                    <input type="number" class="form-control" id="numero_parcelas_venda_add" placeholder="Informe a quantidade de parcelas" min="1" max="12">
                   </div>
                 </div>
                 <div class="modal-footer justify-content-between">
