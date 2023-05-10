@@ -12,16 +12,19 @@ $detail = $details->findById(1);
 
 $products = new Product();
 $product = $products->findById(1);
-$product->getCategory();
 
-$orders = new Order();
-$order = $orders->findById(1);
-$order->getPaymentMethod();
+var_dump($products);
+//$product->getCategory();
+//
+//$orders = new Order();
+//$order = $orders->findById(1);
+//$order->getPaymentMethod();
+//
+//$payments = new Payment();
+//$payment = $payments->findById(1);
+////$payment->getCategory();
+//
 
-$payments = new Payment();
-$payment = $payments->findById(1);
-//$payment->getCategory();
 
-var_dump($product->data());
-var_dump($order->data());
-var_dump($payment->getTotalValue()->data());
+//var_dump($order->data());
+//var_dump($payment->getTotalValue()->data());

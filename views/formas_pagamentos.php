@@ -77,7 +77,8 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <?php foreach ($payments as $payment):
+                      <?php if ($payments != null)
+                        foreach ($payments as $payment):
                         $payment->getTimesUsed()->getTotalValue();
                         ?>
                         <tr id="payment-<?= $payment->codigo; ?>">

@@ -30,7 +30,7 @@ class CustomerController extends MainController
             ->fetch(true)
         ;
 
-        return $customers;
+        return $customers != null ? $customers : [];
     }
 
     public function index(): void

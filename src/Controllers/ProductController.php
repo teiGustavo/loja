@@ -21,14 +21,14 @@ class ProductController extends MainController
             )
             ->fetch(true);
 
-        return $products;
+        return $products != null ? $products : [];
     }
 
     public function getCategories(): array
     {
         $categories = (new Category())->find()->fetch(true);
 
-        return $categories;
+        return $categories != null ? $categories : [];
     }
 
     public function index(): void

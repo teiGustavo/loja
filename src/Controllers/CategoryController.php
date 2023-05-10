@@ -11,7 +11,7 @@ class CategoryController extends MainController
         $model = new Category();
         $categories = $model->find("", "", "codigo_categoria, nome, date_format(data_cadastro, '%d/%m/%Y') as data_cadastro")->fetch(true);
 
-        return $categories;
+        return $categories != null ? $categories : [];
     }
 
     public function index(): void

@@ -20,7 +20,7 @@ const DATA_LAYER_CONFIG = [
 const URL_BASE = "http://localhost/GustavoT/loja";
 
 //Constante de Título base do site
-const TITLE_PREFIX = "ThirdEye";
+const TITLE_PREFIX = "Shop Gestor";
 
 function url(string $path): string
 {

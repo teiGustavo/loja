@@ -21,14 +21,14 @@ class PaymentController extends MainController
         $model = new Order();
         $orders = $model->find()->fetch(true);
 
-        return $orders;
+        return $orders != null ? $orders : [];
     }
 
     public function getPaymentsValue(): array
     {
         $paymentValues = $this->model->find()->fetch(true);
 
-        return $paymentValues;
+        return $paymentValues != null ? $paymentValues : [];
     }
 
     public function index(): void

@@ -29,14 +29,14 @@ class OrderController extends MainController
             ->fetch(true)
         ;
 
-        return $order;
+        return $order != null ? $order : [];
     }
 
     public function getMethodPayments(): array
     {
         $methods = (new Payment())->find()->fetch(true);
 
-        return $methods;
+        return $methods != null ? $methods : [];
     }
 
     public function index(): void
