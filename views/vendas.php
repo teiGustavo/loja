@@ -6,7 +6,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title><?= $title_prefix; ?> | Vendas</title>
+  <title>
+    <?= $title_prefix; ?> | Vendas
+  </title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet"
@@ -15,13 +17,20 @@
   <link rel="stylesheet" href="<?= url("/plugins/fontawesome-free/css/all.min.css"); ?>">
   <!-- Theme style -->
   <link rel="stylesheet" href="<?= url("/views/assets/css/adminlte.min.css"); ?>">
-  <link rel="stylesheet" href="<?= url("/views/assets/css/loading.css"); ?>"
-  >
+  <link rel="stylesheet" href="<?= url("/views/assets/css/loading.css"); ?>">
   <link rel="stylesheet" href="<?= url("/views/assets/css/select.css"); ?>">
+
+  <!-- Select2 -->
+  <link rel="stylesheet" href="<?= url("/vendor/select2/select2/dist/css/select2.min.css"); ?>">
 </head>
 
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition sidebar-mini dark-mode sidebar-collapse">
   <div class="wrapper">
+
+    <!-- Preloader -->
+    <div class="preloader flex-column justify-content-center align-items-center">
+      <img class="animation__shake" src="views/assets/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+    </div>
 
     <?php include 'partials/menus.php'; ?>
 
@@ -79,14 +88,20 @@
                     </thead>
                     <tbody>
                       <?php foreach ($orders as $order):
+                        $order->getCustomer();
+                        $order->getPayment();
                         ?>
                         <tr id="order-<?= $order->id; ?>">
                           <td id="orderCpf-<?= $order->id; ?>">
-                            <?= $order->cliente; ?>
+                            <?= $order->customer->cpf; ?>
                           </td>
 
                           <td id="orderPaymentMethod-<?= $order->id; ?>">
-                            <?= $order->formapgto; ?>
+                            <?= $order->payment->descricao; ?>
+                          </td>
+
+                          <td id="orderPaymentMethodId-<?= $order->id; ?>" style="display: none;">
+                            <?= $order->payment->codigo; ?>
                           </td>
 
                           <td id="orderQuantity-<?= $order->id; ?>">
@@ -137,9 +152,9 @@
                       placeholder="Informe o CPF da nova venda">
                   </div>
                   <div class="form-group">
-                    <label for="nome_produto_edit" class="form-label">Categoria</label>
+                    <label for="nome_produto_edit" class="form-label">Forma de Pagamento</label>
                     <select class="select" id="forma_pgto_venda_add">
-                      <option selected>Selecione a categoria</option>
+                      <option selected>Selecione a forma de pagamento</option>
 
                       <?php foreach ($methodPayments as $methodPayment):
                         ?>
@@ -152,7 +167,8 @@
                   </div>
                   <div class="form-group">
                     <label for="nome_venda">Número de Parcelas</label>
-                    <input type="number" class="form-control" id="numero_parcelas_venda_add" placeholder="Informe a quantidade de parcelas" min="1" max="12">
+                    <input type="number" class="form-control" id="numero_parcelas_venda_add"
+                      placeholder="Informe a quantidade de parcelas" min="1" max="12">
                   </div>
                 </div>
                 <div class="modal-footer justify-content-between">
@@ -185,7 +201,8 @@
                     <input type="hidden" id="cpf_venda_edit" value="">
                   </div>
                   <div class="form-group">
-                    <label for="nome_produto_edit" class="form-label">Categoria</label>
+                    <label for="nome_produto_edit" class="form-label">Forma de Pagamento</label>
+                    <!--select class="js-example-basic-multiple" name="states[]" multiple="multiple"-->
                     <select class="select" id="forma_pgto_venda_edit">
 
                       <?php foreach ($methodPayments as $methodPayment):
@@ -247,6 +264,8 @@
   <script src="<?= url("/views/assets/js/bootbox.min.js"); ?>"></script>
   <!-- jQuery Mask  -->
   <script src="<?= url("/plugins/jquery/jquery.mask.min.js"); ?>"></script>
+  <!-- Select2  -->
+  <script src="<?= url("/vendor/select2/select2/dist/js/select2.min.js"); ?>"></script>
 
 </body>
 
@@ -255,15 +274,14 @@
   const PAYMENT_METHOD = $("#forma_pgto_venda_add");
   const QUANTITY_PARCELAS = $("#numero_parcelas_venda_add");
 
-
   const CPF_EDIT = $("#cpf_venda_edit");
   const PAYMENT_METHOD_EDIT = $("#forma_pgto_venda_edit");
   const QUANTITY_PARCELAS_EDIT = $("#numero_parcelas_venda_edit");
 
-
-
   CPF.mask('000.000.000-00');
   CPF_EDIT.mask('000.000.000-00');
+
+  $('.js-example-basic-multiple').select2();
 
   function getNowDate() {
     d = new Date();
@@ -308,14 +326,14 @@
   //Formulário responsável por adicionar um order
   $("#form_add_venda").submit(function (event) {
     event.preventDefault();
-    
+
     cpf = CPF.val();
     paymentMethod = PAYMENT_METHOD.val();
     quantity = QUANTITY_PARCELAS.unmask().val();
-    
+
     addOrder(cpf, paymentMethod, quantity);
-    
-    cpf = CPF.unmask().val();
+
+    //cpf = CPF.unmask().val();
 
     $.ajax({
       url: "<?= $router->route("loja.cadastrar.venda"); ?>",
@@ -360,11 +378,13 @@
     id = $(this).val();
 
     cpfVal = $("#orderCpf-" + id).text();
-    paymentVal = $("#orderPaymentMethod-" + id).text();
-    quantityVal = $("#orderQuantity-" + id).text().replace("x sem juros", ""); 
+    paymentVal = $("#orderPaymentMethodId-" + id).text();
+    quantityVal = $("#orderQuantity-" + id).text().replace("x sem juros", "");
+
+    console.log(paymentVal);
 
     CPF_EDIT.val(cpfVal.trim());
-    PAYMENT_METHOD_EDIT.val(paymentVal.trim());
+    PAYMENT_METHOD_EDIT.val(paymentVal.trim()).attr("selected");
     QUANTITY_PARCELAS_EDIT.val(quantityVal.trim());
 
     $("#form_edit_venda").submit(function (event) {
@@ -376,7 +396,7 @@
 
       modifyOrder(id, cpf, paymentMethod, quantity);
 
-      unmaskCpf = CPF_EDIT.unmask().val();
+      //cpf = CPF_EDIT.unmask().val();
 
       $.ajax({
         url: "<?= $router->route("loja.editar.venda"); ?>",
@@ -384,7 +404,7 @@
         type: "POST",
         data: {
           id: id,
-          cpf: unmaskCpf,
+          cpf: cpf,
           paymentMethod: paymentMethod,
           quantity: quantity
         }

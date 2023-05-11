@@ -19,6 +19,7 @@
         "league/plates": "^3.5",
         "coffeecode/datalayer": "^2.0",
         "hackzilla/password-generator": "^1.6",
-        "uptodown/random-username-generator": "^1.0"
+        "uptodown/random-username-generator": "^1.0",
+        "select2/select2": "^4.0"
     }
 }

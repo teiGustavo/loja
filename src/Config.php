@@ -5,7 +5,7 @@ const DATA_LAYER_CONFIG = [
     "driver" => "mysql",
     "host" => "localhost",
     "port" => "3306",
-    "dbname" => "loja",
+    "dbname" => "lojas",
     "username" => "root",
     "passwd" => "root",
     "options" => [
@@ -17,7 +17,7 @@ const DATA_LAYER_CONFIG = [
 ];
 
 //Constante de URL base do site
-const URL_BASE = "http://localhost/GustavoT/loja";
+const URL_BASE = "http://localhost/loja";
 
 //Constante de Título base do site
 const TITLE_PREFIX = "Shop Gestor";

@@ -2,6 +2,7 @@
 
 namespace Loja\Controllers;
 
+use Loja\Models\Customer;
 use Loja\Models\Order;
 use Loja\Models\Payment;
 
@@ -55,12 +56,21 @@ class OrderController extends MainController
 
     public function createOrder(array $data): void
     {
+        function getCustomerId(string $cpf)
+        {
+            $customer = (new Customer())->find("cpf = :cpf", "cpf = '{$cpf}'");
+            $customerId = $customer->id;
+
+            echo json_encode($customer, JSON_UNESCAPED_UNICODE);
+            return $customerId;
+        }
+
         $orderCpf = filter_var($data["cpf"], FILTER_SANITIZE_STRING);
         $orderPaymentMethod = filter_var($data["paymentMethod"], FILTER_SANITIZE_NUMBER_INT);
         $orderParcelasQuantity = filter_var($data["quantity"], FILTER_SANITIZE_NUMBER_INT);
 
         $order = $this->model;
-        $order->cliente = $orderCpf;
+        $order->cliente = 1;
         $order->formapgto = $orderPaymentMethod;
         $order->numparcelas = $orderParcelasQuantity;
 

@@ -13,20 +13,27 @@ class Order extends DataLayer
         parent::__construct("orders", ["cliente", "formapgto"], "id", false);
     }
 
-    public function getPaymentMethod()
+    public function getPayment()
     {
-        $this->paymentMethod = (new Payment())->findById($this->formapgto)->data();
+        $this->payment = (new Payment())->findById($this->formapgto)->data();
 
         return $this;
     }
 
-    public function getPayment(): Order
+    /*public function getPayments(): Order
     {
         $payment = ((new Payment())->findById($this->id)->getTimesUsed()->getTotalValue()->data());
         
         $this->methodPayment = $payment->descricao;
         $this->methodPaymentTimesUsed = $payment->timesUsed;
         $this->methodPaymentTotalValue = $payment->totalValue;
+
+        return $this;
+    }*/
+
+    public function getCustomer(): Order
+    {
+        $this->customer = (new Customer())->findById(intval($this->cliente))->data();
 
         return $this;
     }

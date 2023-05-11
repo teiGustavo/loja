@@ -20,8 +20,13 @@
   <link rel="stylesheet" href="<?= url("/views/assets/css/loading.css"); ?>">
 </head>
 
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition sidebar-mini dark-mode sidebar-collapse">
   <div class="wrapper">
+
+    <!-- Preloader -->
+    <div class="preloader flex-column justify-content-center align-items-center">
+      <img class="animation__shake" src="views/assets/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+    </div>
 
     <?php include 'partials/menus.php'; ?>
 
@@ -79,32 +84,32 @@
                     <tbody>
                       <?php if ($payments != null)
                         foreach ($payments as $payment):
-                        $payment->getTimesUsed()->getTotalValue();
-                        ?>
-                        <tr id="payment-<?= $payment->codigo; ?>">
-                          <td id="paymentMethod-<?= $payment->codigo; ?>">
-                            <?= $payment->descricao; ?>
-                          </td>
+                          $payment->getTimesUsed()->getTotalValue();
+                          ?>
+                          <tr id="payment-<?= $payment->codigo; ?>">
+                            <td id="paymentMethod-<?= $payment->codigo; ?>">
+                              <?= $payment->descricao; ?>
+                            </td>
 
-                          <td codigo="paymentTimesUsed-<?= $payment->codigo; ?>">
-                            <?= $payment->timesUsed . "x"; ?>
-                          </td>
+                            <td codigo="paymentTimesUsed-<?= $payment->codigo; ?>">
+                              <?= $payment->timesUsed . "x"; ?>
+                            </td>
 
-                          <td codigo="paymentTotalValue-<?= $payment->codigo; ?>">
-                            <?= $payment->totalValue != "" ? $payment->totalValue : "R$ 0,00"; ?>
-                          </td>
+                            <td codigo="paymentTotalValue-<?= $payment->codigo; ?>">
+                              <?= $payment->totalValue != "" ? $payment->totalValue : "R$ 0,00"; ?>
+                            </td>
 
-                          <td>
-                            <button type="button" class="btn btn-secondary btn-sm" id="btnEditar"
-                              value="<?= $payment->codigo; ?>" data-toggle="modal" data-target="#modal-edit-forma_pgto"><i
-                                class="nav-icon fas fa-edit"></i>
-                              Editar</button>
-                            <button type="button" class="btn btn-danger btn-sm" id="btnExcluir"
-                              value="<?= $payment->codigo; ?>"><i class="nav-icon fas fa-trash"></i>
-                              Excluir</button>
-                          </td>
-                        </tr>
-                      <?php endforeach; ?>
+                            <td>
+                              <button type="button" class="btn btn-secondary btn-sm" id="btnEditar"
+                                value="<?= $payment->codigo; ?>" data-toggle="modal" data-target="#modal-edit-forma_pgto"><i
+                                  class="nav-icon fas fa-edit"></i>
+                                Editar</button>
+                              <button type="button" class="btn btn-danger btn-sm" id="btnExcluir"
+                                value="<?= $payment->codigo; ?>"><i class="nav-icon fas fa-trash"></i>
+                                Excluir</button>
+                            </td>
+                          </tr>
+                        <?php endforeach; ?>
                     </tbody>
                   </table>
                 </div>

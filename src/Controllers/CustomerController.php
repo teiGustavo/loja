@@ -24,7 +24,7 @@ class CustomerController extends MainController
             ->find(
                 "",
                 "",
-                "id, CONCAT(SUBSTR(cpf,1,3),'.',SUBSTR(cpf,4,3),'.',SUBSTR(cpf,7,3),'-',SUBSTR(cpf,10,2)) as cpf, 
+                "id, cpf, 
                     nome, date_format(datanasc, '%d/%m/%Y') as datanasc, date_format(datacadastro, '%d/%m/%Y') as datacadastro, email"
             )
             ->fetch(true)

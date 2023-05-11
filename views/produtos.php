@@ -23,8 +23,13 @@
   <link rel="stylesheet" href="<?= url("/views/assets/css/select.css"); ?>">
 </head>
 
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition sidebar-mini dark-mode sidebar-collapse">
   <div class="wrapper">
+
+    <!-- Preloader -->
+    <div class="preloader flex-column justify-content-center align-items-center">
+      <img class="animation__shake" src="views/assets/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+    </div>
 
     <?php include 'partials/menus.php'; ?>
 
@@ -302,7 +307,7 @@
   }
 
   function addProduct(name, price, qtd, category) {
-    nowDate =getNowDate();
+    nowDate = getNowDate();
 
     buttons = "<button type='button' class='btn btn-secondary btn-sm'><i class='nav-icon fas fa-edit'></i>Editar</button>" +
       "<button type='button' id='btnExcluir' class='btn btn-danger btn-sm' style='margin-left: 0.2rem;'><i class='nav-icon fas fa-trash' style='margin-right: 0.1rem;'></i>Excluir</button>";

@@ -6,7 +6,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title><?= $title_prefix; ?> | Clientes</title>
+  <title>
+    <?= $title_prefix; ?> | Clientes
+  </title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet"
@@ -18,8 +20,13 @@
   <link rel="stylesheet" href="<?= url("/views/assets/css/loading.css"); ?>">
 </head>
 
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition sidebar-mini dark-mode sidebar-collapse">
   <div class="wrapper">
+
+    <!-- Preloader -->
+    <div class="preloader flex-column justify-content-center align-items-center">
+      <img class="animation__shake" src="views/assets/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+    </div>
 
     <?php include 'partials/menus.php'; ?>
 
@@ -89,6 +96,10 @@
 
                           <td id="customerEmail-<?= $customer->id; ?>">
                             <?= $customer->email; ?>
+                          </td>
+
+                          <td id="customerDateBirth-<?= $customer->id; ?>" style="display: none;">
+                            <?= $customer->datanasc; ?>
                           </td>
 
                           <td>
@@ -305,7 +316,7 @@
 
     addCustomer(cpf, name, email);
 
-    cpf = CPF.unmask().val();
+    //cpf = CPF.unmask().val();
 
     $.ajax({
       url: "<?= $router->route("loja.cadastrar.cliente"); ?>",
@@ -351,7 +362,20 @@
   $("body").on("click", "#btnEditar", function () {
     id = $(this).val();
 
-    //Formulário responsável por editar um produto
+    cpfVal = $("#customerCpf-" + id).text().trim();
+    nameVal = $("#customerName-" + id).text().trim();
+    emailVal = $("#customerEmail-" + id).text().trim();
+    dateVal = $("#customerDateBirth-" + id).text().trim();
+
+    dateVals = dateVal.split("/");
+    dateVal = dateVals[2] + "-" + dateVals[1] + "-" + dateVals[0];
+
+    CPF_EDIT.val(cpfVal);
+    NAME_EDIT.val(nameVal);
+    EMAIL_EDIT.val(emailVal);
+    DATE_BIRTH_EDIT.val(dateVal);
+
+    //Formulário responsável por editar um cliente
     $("#form_edit_cliente").submit(function (event) {
       event.preventDefault();
 
@@ -362,7 +386,7 @@
 
       modifyCustomer(id, cpf, name, email, dateBirth);
 
-      unmaskCpf = CPF_EDIT.unmask().val();
+      //cpf = CPF_EDIT.unmask().val();
 
       $.ajax({
         url: "<?= $router->route("loja.editar.cliente"); ?>",
@@ -370,7 +394,7 @@
         type: "POST",
         data: {
           id: id,
-          cpf: unmaskCpf,
+          cpf: cpf,
           name: name,
           email: email,
           dateBirth: dateBirth
