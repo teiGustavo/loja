@@ -152,9 +152,10 @@
                       placeholder="Informe o CPF da nova venda">
                   </div>
                   <div class="form-group">
-                    <label for="nome_produto_edit" class="form-label">Forma de Pagamento</label>
-                    <select class="select" id="forma_pgto_venda_add">
-                      <option selected>Selecione a forma de pagamento</option>
+                    <label for="forma_pgto_venda_add" class="form-label">Forma de Pagamento</label>
+                    <!--select class="select" id="forma_pgto_venda_add"-->
+                    <select class="js-example-basic-multiple" name="states[]" multiple="multiple" id="forma_pgto_venda_add">
+                      <!--option selected>Selecione a forma de pagamento</option-->
 
                       <?php foreach ($methodPayments as $methodPayment):
                         ?>

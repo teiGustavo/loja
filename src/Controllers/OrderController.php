@@ -74,8 +74,8 @@ class OrderController extends MainController
         $order->formapgto = $orderPaymentMethod;
         $order->numparcelas = $orderParcelasQuantity;
 
-        if (!$order->save())
-            echo json_encode($order->fail()->getMessage(), JSON_UNESCAPED_UNICODE); 
+        /*if (!$order->save())
+            echo json_encode($order->fail()->getMessage(), JSON_UNESCAPED_UNICODE); */
 
         echo json_encode($data, JSON_UNESCAPED_UNICODE); 
     }
