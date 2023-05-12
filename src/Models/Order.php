@@ -22,9 +22,17 @@ class Order extends DataLayer
 
     public function getProduct(): Order
     {
-        $orderDetails = (new OrderDetails())->find("venda = {$this->id}", "", "id")->fetch()->id;
+        $orderDetails = (new OrderDetails())->find("venda = {$this->id}")->fetch()->id;
 
         $this->product = (new Product())->findById($orderDetails)->data();
+
+        return $this;
+    }
+
+    public function getOrderDetails(): Order
+    {
+        $orderDetails = (new OrderDetails())->find("venda = {$this->id}")->fetch(true);
+        $this->orderDetails = $orderDetails;
 
         return $this;
     }

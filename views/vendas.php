@@ -88,9 +88,9 @@
                     </thead>
                     <tbody>
                       <?php foreach ($orders as $order):
-                        $order->getCustomer();
-                        $order->getPayment();
-                        $order->getProduct();
+                        $order->getCustomer()->data();
+                        $order->getPayment()->data();
+                        $order->getOrderDetails()->data();
                         ?>
                         <tr id="order-<?= $order->id; ?>">
                           <td id="orderCpf-<?= $order->id; ?>">
@@ -105,9 +105,17 @@
                             <?= $order->payment->codigo; ?>
                           </td>
 
-                          <td id="orderProducts-<?= $order->id; ?>" class="d-none">
-                            <?= $order->product->codigo_produto; ?>
-                          </td>
+                          <ul id="orderProduct-<?= $order->id; ?>" class="d-none">
+                            <?php foreach ($order->orderDetails as $orderDetail):
+                              //var_dump($orderDetail->data());
+                              ?>
+
+                              <li class="d-none">
+                                <?= $orderDetail->produto; ?>
+                              </li>
+
+                            <?php endforeach; ?>
+                          </ul>
 
                           <td id="orderQuantity-<?= $order->id; ?>">
                             <?= $order->numparcelas . "x sem juros"; ?>
@@ -151,24 +159,40 @@
 
               <form id="form_add_venda">
                 <div class="modal-body">
-                  <div class="form-group">
+                  <!--div class="form-group">
                     <label for="cpf_venda">CPF</label>
                     <input type="text" class="form-control" id="cpf_venda_add"
                       placeholder="Informe o CPF da nova venda">
+                  </div-->
+
+                  <div class="form-group d-flex flex-column">
+                    <label for="cpf2_venda_add" class="form-label">CPF</label>
+                    <select class="js-example-basic-single" id="cpf_venda_add">
+                    <option selected>Selecione o CPF do cliente</option>
+
+                      <?php foreach ($customers as $customer):
+                        ?>
+
+                        <option value="<?= $customer->id; ?>">
+                          <?= $customer->cpf; ?>
+                        </option>
+
+                      <?php endforeach; ?>
+
+                    </select>
                   </div>
 
                   <div class="form-group d-flex flex-column">
                     <label for="forma_pgto_venda_add" class="form-label">Forma de Pagamento</label>
                     <select class="select" id="forma_pgto_venda_add">
-                      <!--select class="js-example-basic-multiple" name="states[]" multiple="multiple"
-                      id="forma_pgto_venda_add"-->
                       <option selected>Selecione a forma de pagamento</option>
 
                       <?php foreach ($methodPayments as $methodPayment):
                         ?>
 
                         <option id="optionPayment-<?= $methodPayment->codigo; ?>" value="<?= $methodPayment->codigo; ?>">
-                          <?= $methodPayment->descricao; ?></option>
+                          <?= $methodPayment->descricao; ?>
+                        </option>
 
                       <?php endforeach; ?>
 
@@ -186,7 +210,9 @@
                       <?php foreach ($products as $product):
                         ?>
 
-                        <option value="<?= $product->codigo_produto; ?>"><?= mb_strimwidth($product->nome, 0, 60, "..."); ?></option>
+                        <option value="<?= $product->codigo_produto; ?>">
+                          <?= mb_strimwidth($product->nome, 0, 60, "..."); ?>
+                        </option>
 
                       <?php endforeach; ?>
 
@@ -333,15 +359,25 @@
   const CPF_EDIT = $("#cpf_venda_edit");
   const PAYMENT_METHOD_EDIT = $("#forma_pgto_venda_edit");
   const QUANTITY_PARCELAS_EDIT = $("#numero_parcelas_venda_edit");
+  const PRODUCTS_EDIT = $("#produtos_venda_edit");
 
-  CPF.mask('000.000.000-00');
-  CPF_EDIT.mask('000.000.000-00');
 
-  $('.js-example-theme-multiple').select2({
-    placeholder: "Selecione os produtos"
+  //CPF.mask('000.000.000-00');
+  //CPF_EDIT.mask('000.000.000-00');
+
+  $(document).ready(function () {
+    $('.js-example-basic-single').select2({
+      placeholder: "Selecione o CPF do cliente"
+    });
+
+    $('.js-example-theme-multiple').select2({
+      placeholder: "Selecione os produtos"
+    });
+
+    $("span").addClass("bg-dark");
+    $("span .select2-selection").addClass("h-auto");
+    $("span .select2-selection__arrow").addClass("h-98");
   });
-
-  $("span").addClass("bg-dark");
 
   function getNowDate() {
     d = new Date();
@@ -439,6 +475,8 @@
     $("#orderCpf-" + id).text(cpf);
     $("#orderPaymentMethod-" + id).text(paymentMethod);
     $("#orderQuantity-" + id).text(quantity + "x sem juros");
+
+    PRODUCTS_EDIT.val(null).trigger("change");
   }
 
   //Botao de editar Vendas
@@ -449,9 +487,17 @@
     paymentVal = $("#orderPaymentMethodId-" + id).text();
     quantityVal = $("#orderQuantity-" + id).text().replace("x sem juros", "");
 
+    var productsVal = [];
+    $("#orderProduct-" + id + " li").each(function (i) {
+      productsVal.push($(this).text().trim());
+    });
+
     CPF_EDIT.val(cpfVal.trim());
     PAYMENT_METHOD_EDIT.val(paymentVal.trim()).attr("selected");
     QUANTITY_PARCELAS_EDIT.val(quantityVal.trim());
+
+    PRODUCTS_EDIT.val(productsVal);
+    PRODUCTS_EDIT.trigger("change");
 
     $("#form_edit_venda").submit(function (event) {
       event.preventDefault();

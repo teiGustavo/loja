@@ -10,11 +10,11 @@ use Loja\Models\Product;
 $detail = $details->findById(1);
 //$detail->getOrder(); */
 
-$products = new Product();
+/*$products = new Product();
 $product = $products->findById(1);
 
 var_dump($products);
-//$product->getCategory();
+//$product->getCategory();*/
 //
 //$orders = new Order();
 //$order = $orders->findById(1);
@@ -23,16 +23,17 @@ var_dump($products);
 //$payments = new Payment();
 //$payment = $payments->findById(1);
 ////$payment->getCategory();
-//
-$testes = ["0", "1"];
-foreach ($testes as $teste) {
-    echo $teste;
-    echo "<br>";
+$orderDetails = (new OrderDetails())->find("venda = 8")->fetch(true);
+
+foreach ($orderDetails as $orderDetail) {
+    var_dump($orderDetail->getProduct()->data());
 }
 
-var_dump($order = (new Order())->find("", "", "id")->order("id DESC")->limit(1)->fetch()->id);
+//var_dump($orderDetails);
 
-$orderDetails = (new OrderDetails())->find("venda = 7", "", "id")->fetch(true);
+//var_dump($order = (new Order())->findById(8)->getProduct());
+
+//$orderDetails = (new OrderDetails())->find("venda = 7", "", "id")->fetch(true);
 
 /* $venda = 1;
 $prod = 1;
@@ -44,7 +45,7 @@ $orderDetails->getProduct();
 
 $orderDetails->valor = $orderDetails->product->preco; */
 
-var_dump($orderDetails);
+//var_dump($orderDetails);
 
 
 //var_dump($order->data());

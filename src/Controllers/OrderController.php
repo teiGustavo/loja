@@ -56,16 +56,25 @@ class OrderController extends MainController
         return $orderDetails;
     }
 
+    public function getCustomers(): array
+    {
+        $customers = (new Customer())->find()->fetch(true);
+
+        return $customers;
+    }
+
     public function index(): void
     {
         $orders = $this->getOrder();
         $methodPayments = $this->getMethodPayments();
         $products = $this->getProducts();
+        $customers = $this->getCustomers();
 
         $params = [
             "orders" => $orders,
             "methodPayments" => $methodPayments,
-            "products" => $products
+            "products" => $products,
+            "customers" => $customers
         ];
 
         //Renderiza a página
