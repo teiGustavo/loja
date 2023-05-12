@@ -20,16 +20,25 @@ class Order extends DataLayer
         return $this;
     }
 
-    /*public function getPayments(): Order
+    public function getProduct(): Order
     {
-        $payment = ((new Payment())->findById($this->id)->getTimesUsed()->getTotalValue()->data());
+        $orderDetails = (new OrderDetails())->find("venda = {$this->id}", "", "id")->fetch()->id;
+
+        $this->product = (new Product())->findById($orderDetails)->data();
+
+        return $this;
+    }
+
+ /*    public function getPaymentMethod(): Order
+    {
+        $payment = ((new Payment())->findById($this->formapgto)->data());
         
         $this->methodPayment = $payment->descricao;
         $this->methodPaymentTimesUsed = $payment->timesUsed;
-        $this->methodPaymentTotalValue = $payment->totalValue;
+        $this->methodPaymentTotalValue = $payment->totalValue; 
 
-        return $this;
-    }*/
+       return $this;
+    }  */
 
     public function getCustomer(): Order
     {

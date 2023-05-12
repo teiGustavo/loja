@@ -90,6 +90,7 @@
                       <?php foreach ($orders as $order):
                         $order->getCustomer();
                         $order->getPayment();
+                        $order->getProduct();
                         ?>
                         <tr id="order-<?= $order->id; ?>">
                           <td id="orderCpf-<?= $order->id; ?>">
@@ -100,8 +101,12 @@
                             <?= $order->payment->descricao; ?>
                           </td>
 
-                          <td id="orderPaymentMethodId-<?= $order->id; ?>" style="display: none;">
+                          <td id="orderPaymentMethodId-<?= $order->id; ?>" class="d-none">
                             <?= $order->payment->codigo; ?>
+                          </td>
+
+                          <td id="orderProducts-<?= $order->id; ?>" class="d-none">
+                            <?= $order->product->codigo_produto; ?>
                           </td>
 
                           <td id="orderQuantity-<?= $order->id; ?>">
@@ -151,26 +156,49 @@
                     <input type="text" class="form-control" id="cpf_venda_add"
                       placeholder="Informe o CPF da nova venda">
                   </div>
-                  <div class="form-group">
+
+                  <div class="form-group d-flex flex-column">
                     <label for="forma_pgto_venda_add" class="form-label">Forma de Pagamento</label>
-                    <!--select class="select" id="forma_pgto_venda_add"-->
-                    <select class="js-example-basic-multiple" name="states[]" multiple="multiple" id="forma_pgto_venda_add">
-                      <!--option selected>Selecione a forma de pagamento</option-->
+                    <select class="select" id="forma_pgto_venda_add">
+                      <!--select class="js-example-basic-multiple" name="states[]" multiple="multiple"
+                      id="forma_pgto_venda_add"-->
+                      <option selected>Selecione a forma de pagamento</option>
 
                       <?php foreach ($methodPayments as $methodPayment):
                         ?>
 
-                        <option value="<?= $methodPayment->codigo; ?>"><?= $methodPayment->descricao; ?></option>
+                        <option id="optionPayment-<?= $methodPayment->codigo; ?>" value="<?= $methodPayment->codigo; ?>">
+                          <?= $methodPayment->descricao; ?></option>
 
                       <?php endforeach; ?>
 
                     </select>
                   </div>
+
+                  <div class="form-group d-flex flex-column select2-dark">
+                    <label for="forma_pgto_venda_add" class="form-label">Produtos</label>
+
+                    <!--select class="select" id="forma_pgto_venda_add"-->
+                    <select class="js-example-theme-multiple" name="states[]" multiple="multiple"
+                      id="produtos_venda_add">
+                      <!--option selected>Selecione a forma de pagamento</option-->
+
+                      <?php foreach ($products as $product):
+                        ?>
+
+                        <option value="<?= $product->codigo_produto; ?>"><?= mb_strimwidth($product->nome, 0, 60, "..."); ?></option>
+
+                      <?php endforeach; ?>
+
+                    </select>
+                  </div>
+
                   <div class="form-group">
                     <label for="nome_venda">Número de Parcelas</label>
                     <input type="number" class="form-control" id="numero_parcelas_venda_add"
-                      placeholder="Informe a quantidade de parcelas" min="1" max="12">
+                      placeholder="Informe a quantidade de parcelas" value="1" min="1" max="12">
                   </div>
+
                 </div>
                 <div class="modal-footer justify-content-between">
                   <button type="button" class="btn btn-default" data-dismiss="modal" id="closeModal">Fechar</button>
@@ -195,12 +223,14 @@
               </div>
 
               <form id="form_edit_venda">
+
                 <div class="modal-body">
                   <div class="form-group">
                     <label for="nome_venda_edit">CPF</label>
                     <input type="text" class="form-control" id="cpf_venda_edit" value="" autofocus>
                     <input type="hidden" id="cpf_venda_edit" value="">
                   </div>
+
                   <div class="form-group">
                     <label for="nome_produto_edit" class="form-label">Forma de Pagamento</label>
                     <!--select class="js-example-basic-multiple" name="states[]" multiple="multiple"-->
@@ -215,18 +245,42 @@
 
                     </select>
                   </div>
+
                   <div class="form-group">
                     <label for="nome_venda">Número de Parcelas</label>
-                    <input type="number" class="form-control" id="numero_parcelas_venda_edit" min="1" max="12">
+                    <input type="number" class="form-control" id="numero_parcelas_venda_edit" value="1" min="1"
+                      max="12">
                     <input type="hidden" id="numero_parcelas_venda_edit" value="">
                   </div>
+
+                  <div class="form-group d-flex flex-column select2-dark">
+                    <label for="produtos_venda_edit" class="form-label">Produtos</label>
+
+                    <!--select class="select" id="forma_pgto_venda_add"-->
+                    <select class="js-example-theme-multiple" name="products[]" multiple="multiple"
+                      id="produtos_venda_edit">
+                      <!--option selected>Selecione a forma de pagamento</option-->
+
+                      <?php foreach ($products as $product):
+                        ?>
+
+                        <option value="<?= $product->codigo_produto; ?>"><?= mb_strimwidth($product->nome, 0, 60, "..."); ?></option>
+
+                      <?php endforeach; ?>
+
+                    </select>
+                  </div>
+
                 </div>
+
                 <div class="modal-footer justify-content-between">
                   <button type="button" class="btn btn-default" data-dismiss="modal"
                     id="btn_fechar_venda_edit">Fechar</button>
                   <button type="submit" class="btn btn-success" id="btn_salvar_venda_edit">Salvar</button>
                 </div>
+
               </form>
+
               <div id="Loading" class="d-none"></div>
             </div>
             <!-- /.modal-content -->
@@ -274,6 +328,7 @@
   const CPF = $("#cpf_venda_add");
   const PAYMENT_METHOD = $("#forma_pgto_venda_add");
   const QUANTITY_PARCELAS = $("#numero_parcelas_venda_add");
+  const PRODUCTS = $("#produtos_venda_add");
 
   const CPF_EDIT = $("#cpf_venda_edit");
   const PAYMENT_METHOD_EDIT = $("#forma_pgto_venda_edit");
@@ -282,7 +337,11 @@
   CPF.mask('000.000.000-00');
   CPF_EDIT.mask('000.000.000-00');
 
-  $('.js-example-basic-multiple').select2();
+  $('.js-example-theme-multiple').select2({
+    placeholder: "Selecione os produtos"
+  });
+
+  $("span").addClass("bg-dark");
 
   function getNowDate() {
     d = new Date();
@@ -306,13 +365,14 @@
   function addOrder(cpf, paymentMethod, quantity) {
     cpfUnmask = CPF.unmask().val();
     dateCad = getNowDate();
+    payment = $("#optionPayment-" + paymentMethod).text();
 
     buttons = "<button type='button' class='btn btn-secondary btn-sm'><i class='nav-icon fas fa-edit'></i>Editar</button>" +
       "<button type='button' id='btnExcluir' class='btn btn-danger btn-sm' style='margin-left: 0.2rem;'><i class='nav-icon fas fa-trash' style='margin-right: 0.1rem;'></i>Excluir</button>";
 
     order = "<tr id=" + cpfUnmask + " style='display: none;'>" +
       "<td>" + cpf + "</td>" +
-      "<td>" + paymentMethod + "</td>" +
+      "<td>" + payment + "</td>" +
       "<td>" + quantity + "x sem juros</td>" +
       "<td>" + dateCad + "</td>" +
       "<td>" + buttons + "</td>" +
@@ -322,6 +382,11 @@
     $("#closeModal").trigger("click");
 
     $("#" + cpfUnmask).fadeIn(500);
+
+    CPF.val("").mask('000.000.000-00');
+    PAYMENT_METHOD.val("Selecione a forma de pagamento");
+    QUANTITY_PARCELAS.val("");
+    PRODUCTS.val(null).trigger("change");
   }
 
   //Formulário responsável por adicionar um order
@@ -331,6 +396,7 @@
     cpf = CPF.val();
     paymentMethod = PAYMENT_METHOD.val();
     quantity = QUANTITY_PARCELAS.unmask().val();
+    products = PRODUCTS.val();
 
     addOrder(cpf, paymentMethod, quantity);
 
@@ -343,7 +409,8 @@
       data: {
         cpf: cpf,
         paymentMethod: paymentMethod,
-        quantity: quantity
+        quantity: quantity,
+        products: products
       }
     })
   });
@@ -381,8 +448,6 @@
     cpfVal = $("#orderCpf-" + id).text();
     paymentVal = $("#orderPaymentMethodId-" + id).text();
     quantityVal = $("#orderQuantity-" + id).text().replace("x sem juros", "");
-
-    console.log(paymentVal);
 
     CPF_EDIT.val(cpfVal.trim());
     PAYMENT_METHOD_EDIT.val(paymentVal.trim()).attr("selected");

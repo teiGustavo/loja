@@ -98,7 +98,7 @@
                             <?= $customer->email; ?>
                           </td>
 
-                          <td id="customerDateBirth-<?= $customer->id; ?>" style="display: none;">
+                          <td id="customerDateBirth-<?= $customer->id; ?>" class="d-none">
                             <?= $customer->datanasc; ?>
                           </td>
 
@@ -303,6 +303,11 @@
     $("#closeModal").trigger("click");
 
     $("#" + cpfUnmask).fadeIn(500);
+
+    CPF.val("").mask('000.000.000-00');
+    NAME.val("");
+    EMAIL.val("");
+    DATE_BIRTH.val("");
   }
 
   //Formulário responsável por adicionar um cliente

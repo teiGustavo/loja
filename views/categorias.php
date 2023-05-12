@@ -253,6 +253,8 @@
     $("#" + name).fadeIn(500);
 
     $("#closeModal").trigger("click");
+
+    $("#nome_categoria_add").val("");
   }
 
   function removeCategory(id) {

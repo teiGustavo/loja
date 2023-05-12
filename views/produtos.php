@@ -329,7 +329,7 @@
     NAME.val("");
     PRICE.val("");
     QUANTITY.val("");
-    CATEGORY.val("");
+    CATEGORY.val("Selecione a categoria");
   }
 
   //Formulário responsável por adicionar um produto
