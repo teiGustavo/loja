@@ -110,6 +110,13 @@ class OrderController extends MainController
                 return $productPrice;
             }
 
+            function updateStorage(int $productId): void
+            {
+                $product = (new Product())->findById($productId);
+                $product->quantidade = $product->quantidade - 1;
+                $product->save();
+            }
+
             foreach ($orderProducts as $orderProduct) {
                 $orderId = getLastOrderId();
 
@@ -118,6 +125,8 @@ class OrderController extends MainController
                 $orderDetails->venda = $orderId;
                 $orderDetails->produto = $orderProduct;
                 $orderDetails->valor = getProductValue($orderProduct);
+
+                updateStorage($orderProduct);
 
                 if (!$orderDetails->save())
                     echo json_encode($orderDetails->fail()->getMessage(), JSON_UNESCAPED_UNICODE);

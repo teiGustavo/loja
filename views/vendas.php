@@ -166,14 +166,14 @@
                   </div-->
 
                   <div class="form-group d-flex flex-column">
-                    <label for="cpf2_venda_add" class="form-label">CPF</label>
+                    <label for="cpf_venda_add" class="form-label">CPF</label>
                     <select class="js-example-basic-single" id="cpf_venda_add">
-                    <option selected>Selecione o CPF do cliente</option>
+                      <option selected>Selecione o CPF do cliente</option>
 
                       <?php foreach ($customers as $customer):
                         ?>
 
-                        <option value="<?= $customer->id; ?>">
+                        <option value="<?= $customer->cpf; ?>">
                           <?= $customer->cpf; ?>
                         </option>
 
@@ -361,6 +361,7 @@
   const QUANTITY_PARCELAS_EDIT = $("#numero_parcelas_venda_edit");
   const PRODUCTS_EDIT = $("#produtos_venda_edit");
 
+  PAYMENT_METHOD.addClass("p-2");
 
   //CPF.mask('000.000.000-00');
   //CPF_EDIT.mask('000.000.000-00');
@@ -376,7 +377,7 @@
 
     $("span").addClass("bg-dark");
     $("span .select2-selection").addClass("h-auto");
-    $("span .select2-selection__arrow").addClass("h-98");
+    $("span .select2-selection__arrow").css("height", "95%");
   });
 
   function getNowDate() {
@@ -399,7 +400,8 @@
   }
 
   function addOrder(cpf, paymentMethod, quantity) {
-    cpfUnmask = CPF.unmask().val();
+    cpfUnmask = cpf.replace(".", "");
+    cpfUnmask = cpfUnmask.replace("-", "").substring(0, 5);
     dateCad = getNowDate();
     payment = $("#optionPayment-" + paymentMethod).text();
 
@@ -419,10 +421,10 @@
 
     $("#" + cpfUnmask).fadeIn(500);
 
-    CPF.val("").mask('000.000.000-00');
     PAYMENT_METHOD.val("Selecione a forma de pagamento");
-    QUANTITY_PARCELAS.val("");
+    QUANTITY_PARCELAS.val(1);
     PRODUCTS.val(null).trigger("change");
+    CPF.val(null).trigger("change");
   }
 
   //Formulário responsável por adicionar um order
@@ -435,8 +437,6 @@
     products = PRODUCTS.val();
 
     addOrder(cpf, paymentMethod, quantity);
-
-    //cpf = CPF.unmask().val();
 
     $.ajax({
       url: "<?= $router->route("loja.cadastrar.venda"); ?>",
@@ -507,8 +507,6 @@
       quantity = QUANTITY_PARCELAS_EDIT.val();
 
       modifyOrder(id, cpf, paymentMethod, quantity);
-
-      //cpf = CPF_EDIT.unmask().val();
 
       $.ajax({
         url: "<?= $router->route("loja.editar.venda"); ?>",
