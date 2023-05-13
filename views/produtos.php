@@ -374,14 +374,15 @@
     });
   });
 
-  function modifyProduct(id, name, price, qtd) {
+  function modifyProduct(id, name, price, qtd, category) {
     $("#btn_fechar_produto_edit").trigger("click");
 
     price = "R$ " + price;
 
     $("#productName-" + id).text(name);
     $("#productPrice-" + id).text(price);
-    $("#productQuantity-" + id).text(qtd);
+    $("#productQtd-" + id).text(qtd);
+    $("#productCategory-" + id).text(category);
   }
 
   //Botao de editar Produtos
@@ -407,7 +408,7 @@
       qtd = QUANTITY_EDIT.val();
       category = CATEGORY_EDIT.val();
 
-      modifyProduct(id, name, price, qtd);
+      modifyProduct(id, name, price, qtd, category);
 
       $.ajax({
         url: "<?= $router->route("loja.editar.produto"); ?>",
