@@ -29,3 +29,7 @@ function url(string $path): string
     }
     return URL_BASE;
 }
+
+if (!isset($_SESSION)) {
+    session_start();
+}

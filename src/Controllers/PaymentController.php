@@ -9,11 +9,12 @@ class PaymentController extends MainController
 {
     protected $model;
 
-    public function __construct($router, $model = new Payment())
+    public function __construct($router)
     {
         parent::__construct($router);
 
-        $this->model = $model;
+        $modelPayment = new Payment();
+        $this->model = $modelPayment;
     }
 
     public function getOrders(): array

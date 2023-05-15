@@ -12,11 +12,12 @@ class OrderController extends MainController
 {
     protected $model;
 
-    public function __construct($router, $model = new Order())
+    public function __construct($router)
     {
         parent::__construct($router);
 
-        $this->model = $model;
+        $modelOrder = new Order();
+        $this->model = $modelOrder;
     }
 
     public function getOrder(): array

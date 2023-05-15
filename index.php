@@ -3,12 +3,14 @@
 require __DIR__ . "/vendor/autoload.php";
 
 use CoffeeCode\Router\Router;
+use Loja\Middlewares\AuthMiddleware;
 
 $router = new Router(URL_BASE);
 
 //Define o namespace dos Controllers
 $router->namespace("Loja\Controllers");
 
+$router->group("", AuthMiddleware::class);
 $router->get("/", "HomeController:index", "loja.home");
 $router->get("/testes", "HomeController:testes", "loja.testes");
 
@@ -42,6 +44,11 @@ $router->get("/", "PaymentController:index", "loja.formaspgto");
 $router->post("/create", "PaymentController:createPayment", "loja.cadastrar.formapgto");
 $router->post("/delete", "PaymentController:deletePayment", "loja.excluir.formapgto");
 $router->post("/update", "PaymentController:updatePayment", "loja.editar.formapgto");
+
+$router->group("auth");
+$router->get("/sign-in", "AuthController:signIn", "loja.auth.logar");
+$router->get("/sign-up", "AuthController:signUp", "loja.auth.cadastrar");
+$router->post("/sign-in/authenticate", "AuthController:authenticate", "loja.auth.authenticate");
 
 //Responsável por despachar as rotas
 $router->dispatch();

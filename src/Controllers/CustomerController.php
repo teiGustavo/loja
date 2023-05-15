@@ -10,11 +10,12 @@ class CustomerController extends MainController
 {
     protected $model;
 
-    public function __construct($router, $model = new Customer())
+    public function __construct($router)
     {
         parent::__construct($router);
 
-        $this->model = $model;
+        $modelCustomer = new Customer();
+        $this->model = $modelCustomer;
     }
 
     public function getCustomers(): array

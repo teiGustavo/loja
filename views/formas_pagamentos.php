@@ -18,6 +18,10 @@
   <!-- Theme style -->
   <link rel="stylesheet" href="<?= url("/views/assets/css/adminlte.min.css"); ?>">
   <link rel="stylesheet" href="<?= url("/views/assets/css/loading.css"); ?>">
+  <!-- Favicon.ico -->
+  <link rel="shortcut icon" href="<?= url("/views/assets/img/favicon.ico"); ?>">
+  <!-- Default CSS -->
+  <link rel="stylesheet" href="<?= url("/views/assets/css/default.css"); ?>">
 </head>
 
 <body class="hold-transition sidebar-mini dark-mode sidebar-collapse">
@@ -25,7 +29,8 @@
 
     <!-- Preloader -->
     <div class="preloader flex-column justify-content-center align-items-center">
-      <img class="animation__shake" src="views/assets/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+      <img class="animation__shake" src="<?= url("/views/assets/img/favicon.ico"); ?>" alt="AdminLTELogo"
+        height="60" width="60">
     </div>
 
     <?php include 'partials/menus.php'; ?>
@@ -82,7 +87,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <?php if ($payments != null)
+                      <?php if ($payments != null):
                         foreach ($payments as $payment):
                           $payment->getTimesUsed()->getTotalValue();
                           ?>
@@ -110,6 +115,7 @@
                             </td>
                           </tr>
                         <?php endforeach; ?>
+                      <?php endif; ?>
                     </tbody>
                   </table>
                 </div>
@@ -186,12 +192,8 @@
       <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
-    <footer class="main-footer">
-      <div class="float-right d-none d-sm-block">
-        <b>Version</b> 3.2.0
-      </div>
-      <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
-    </footer>
+    
+    <?php include "partials/footer.php"; ?>
 
     <!-- Control Sidebar -->
     <aside class="control-sidebar control-sidebar-dark">

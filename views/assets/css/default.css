@@ -1,0 +1,31 @@
+@font-face {
+    src: url(fonts/JetBrainsMono/JetBrainsMono-Regular.ttf);
+    font-family: 'JetBrains Mono';    
+    font-weight: normal;
+} 
+
+*{
+    scrollbar-width: thin;          
+    scrollbar-color: #514869;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #343a40;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #292929;
+    border-radius: 30px;
+}
+
+::-webkit-scrollbar-corner {
+    background: #201b2c;
+}
+
+.JetBrainsMono {
+    font-family: 'JetBrains Mono';
+}

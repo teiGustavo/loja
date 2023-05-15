@@ -1,3 +1,5 @@
+<?php require __DIR__ . "/../vendor/autoload.php"; ?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -12,17 +14,21 @@
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+  <link rel="stylesheet" href="<?= url("/plugins/fontawesome-free/css/all.min.css"); ?>">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Tempusdominus Bootstrap 4 -->
-  <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+  <link rel="stylesheet" href="<?= url("/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css"); ?>">
   <!-- iCheck -->
-  <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+  <link rel="stylesheet" href="<?= url("/plugins/icheck-bootstrap/icheck-bootstrap.min.css"); ?>">
   <!-- Theme style -->
-  <link rel="stylesheet" href="views/assets/css/adminlte.min.css">
+  <link rel="stylesheet" href="<?= url("/views/assets/css/adminlte.min.css"); ?>">
   <!-- overlayScrollbars -->
-  <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+  <link rel="stylesheet" href="<?= url("/plugins/overlayScrollbars/css/OverlayScrollbars.min.css"); ?>">
+  <!-- Favicon.ico -->
+  <link rel="shortcut icon" href="<?= url("/views/assets/img/favicon.ico"); ?>">
+  <!-- Default CSS -->
+  <link rel="stylesheet" href="<?= url("/views/assets/css/default.css"); ?>">
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed dark-mode sidebar-collapse">
@@ -30,7 +36,8 @@
 
     <!-- Preloader -->
     <div class="preloader flex-column justify-content-center align-items-center">
-      <img class="animation__shake" src="views/assets/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+      <img class="animation__shake" src="<?= url("/views/assets/img/favicon.ico"); ?>" alt="AdminLTELogo" height="60"
+        width="60">
     </div>
 
     <?php include "partials/menus.php"; ?>
@@ -134,13 +141,8 @@
       <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
-    <footer class="main-footer">
-      <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
-      All rights reserved.
-      <div class="float-right d-none d-sm-inline-block">
-        <b>Version</b> 3.2.0
-      </div>
-    </footer>
+
+    <?php include "partials/footer.php"; ?>
 
     <!-- Control Sidebar -->
     <aside class="control-sidebar control-sidebar-dark">
@@ -151,23 +153,23 @@
   <!-- ./wrapper -->
 
   <!-- jQuery -->
-  <script src="plugins/jquery/jquery.min.js"></script>
+  <script src="<?= url("/plugins/jquery/jquery.min.js"); ?>"></script>
   <!-- jQuery UI 1.11.4 -->
-  <script src="plugins/jquery-ui/jquery-ui.min.js"></script>
+  <script src="<?= url("/plugins/jquery-ui/jquery-ui.min.js"); ?>"></script>
   <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
   <script>
     $.widget.bridge('uibutton', $.ui.button)
   </script>
   <!-- Bootstrap 4 -->
-  <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="<?= url("/plugins/bootstrap/js/bootstrap.bundle.min.js"); ?>"></script>
   <!-- Tempusdominus Bootstrap 4 -->
-  <script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+  <script src="<?= url("/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"); ?>"></script>
   <!-- AdminLTE App -->
-  <script src="views/assets/js/adminlte.js"></script>
+  <script src="<?= url("/views/assets/js/adminlte.js"); ?>"></script>
   <!-- AdminLTE for demo purposes -->
-  <script src="views/assets/js/demo.js"></script>
+  <script src="<?= url("/views/assets/js/demo.js"); ?>"></script>
   <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-  <script src="views/assets/js/pages/dashboard.js"></script>
+  <script src="<?= url("/views/assets/js/pages/dashboard.js"); ?>"></script>
 </body>
 
 </html>
