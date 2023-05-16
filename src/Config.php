@@ -17,10 +17,13 @@ const DATA_LAYER_CONFIG = [
 ];
 
 //Constante de URL base do site
-const URL_BASE = "http://localhost/loja";
+const URL_BASE = "http://localhost/GustavoT/loja";
 
 //Constante de Título base do site
 const TITLE_PREFIX = "Shop Gestor";
+
+//cosntante que define a chave secreta e única dos tokens da aplicação
+const JWT_KEY = "DSHWWTSX2566018GT";
 
 function url(string $path): string
 {
@@ -28,6 +31,22 @@ function url(string $path): string
         return URL_BASE . "{$path}";
     }
     return URL_BASE;
+}
+
+//Responsável por inicializar as sessões
+function initializeSessions(array $sessions = []): bool
+{
+    //Verifica se as sessões ja estão iniciadas, senão, as inicia
+    if (!isset($_SESSION)) {
+        session_start();
+    }
+
+    //Inicializa as sessões caso alguma tenha sido passada
+    foreach ($sessions as $nameSession => $value) {
+        $_SESSION[$nameSession] = $value;
+    }
+
+    return true;
 }
 
 if (!isset($_SESSION)) {

@@ -5,6 +5,7 @@ use Loja\Models\Order;
 use Loja\Models\OrderDetails;
 use Loja\Models\Payment;
 use Loja\Models\Product;
+use Loja\Models\User;
 
 /* $details = new OrderDetails();
 $detail = $details->findById(1);
@@ -23,13 +24,17 @@ var_dump($products);
 //$payments = new Payment();
 //$payment = $payments->findById(1);
 ////$payment->getCategory();
-$orderDetails = (new OrderDetails())->find("venda = 8")->fetch(true);
+$params = http_build_query([
+    "email" => "adm@adm.com",
+    "password" => "12345678"
+]);
 
-foreach ($orderDetails as $orderDetail) {
-    var_dump($orderDetail->getProduct()->data());
-}
+$user = (new User())->find("email = :email AND senha = :password", $params)->fetch();
 
-//var_dump($orderDetails);
+if ($user)
+    echo "Usuario encontrado!";
+else
+    echo "Usuario não encontrado!";
 
 //var_dump($order = (new Order())->findById(8)->getProduct());
 

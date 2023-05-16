@@ -1,6 +1,7 @@
 <?php
 
 namespace Loja\Controllers;
+
 use Loja\Models\User;
 
 class AuthController extends MainController
@@ -33,7 +34,8 @@ class AuthController extends MainController
         echo $this->view->render("signup", $params);
     }
 
-    public function validateEmail(string $email)
+    //Responsável por validar um email
+    public function validateEmail(string $email): bool
     {
         if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
             return true;
@@ -42,7 +44,8 @@ class AuthController extends MainController
         return false;
     }
 
-    public function validatePassword(string $password)
+    //Responsável por validar uma senha
+    public function validatePassword(string $password): bool
     {
         if (filter_var($password, FILTER_DEFAULT) && strlen($password) >= 8) {
             return true;
@@ -51,6 +54,38 @@ class AuthController extends MainController
         return false;
     }
 
+    private function JWT(array $credentials): string
+    {
+        $expTime = time() + (1 * 1 * 60 * 60); //(Dias * Horas * Minutos * Segundos)
+
+        //Cabeçalho do token (Primeria parte do token JWT)
+        $header = [
+            'alg' => 'HS256',
+            'typ' => 'JWT'
+        ];
+
+        $header = base64_encode(json_encode($header));
+
+        //Segunda parte do token JWT (Carga útil)
+        $payload = [
+            'iss' => URL_BASE,
+            'aud' => URL_BASE,
+            'exp' => $expTime,
+            'id' => $credentials["id"],
+            'email' => $credentials["email"],
+            'username' => $credentials["username"]
+        ];
+
+        $payload = base64_encode(json_encode($payload));
+
+        $signature = hash_hmac('sha256', "$header.$payload", JWT_KEY, true);
+        $signature = base64_encode($signature);
+
+        //Retorna o token JWT
+        return "$header.$payload.$signature";
+    }
+
+    //Função que trata os dados oriundos do formulário de login
     public function authenticate(array $data): void
     {
         $email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_EMAIL);
@@ -62,16 +97,39 @@ class AuthController extends MainController
                 "password" => $password
             ]);
 
-            $user = (new User())->find("email = :email AND senha = :password", $params);
-            $userCount = $user->count();
+            //Procura o email e senha informados no BD
+            $user = (new User())->find("email = :email AND senha = :password", $params)->fetch();
 
-            if ($userCount == 1) {
-                $_SESSION["logged"] = 1;
+            //Verifica se o usuário foi encontrado
+            if ($user) {
+                //Informações a serem passadas pelo Token
+                $credentials = [
+                    "id" => $user->codigo_usuario,
+                    "email" => $user->email,
+                    "username" => $user->username
+                ];
+
+                //Instancia o método que retorna o token JWT
+                $jwt = $this->JWT($credentials);
+
+                //Define a sessão ou cookie do Token
+                initializeSessions(["token" => $jwt, "logged" => true]);
+
+                //Envia o usuário para a tela home
                 $this->router->redirect("loja.home");
             } else {
-                $_SESSION["logged"] = 0;
+                //Define a sessão ou cookie "loggged" como falso
+                initializeSessions(["logged" => false]); 
+                
+                //Retorna o usuário para a tela de login
                 $this->router->redirect("loja.auth.logar");
             }
+        } else {
+            //Define a sessão ou cookie "loggged" como falso
+            initializeSessions(["logged" => false]); 
+                
+            //Retorna o usuário para a tela de login
+            $this->router->redirect("loja.auth.logar");
         }
     }
 }
