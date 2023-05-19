@@ -24,7 +24,8 @@ var_dump($products);
 //$payments = new Payment();
 //$payment = $payments->findById(1);
 ////$payment->getCategory();
-$params = http_build_query([
+
+/*$params = http_build_query([
     "email" => "adm@adm.com",
     "password" => "12345678"
 ]);
@@ -35,6 +36,8 @@ if ($user)
     echo "Usuario encontrado!";
 else
     echo "Usuario não encontrado!";
+*/
+
 
 //var_dump($order = (new Order())->findById(8)->getProduct());
 

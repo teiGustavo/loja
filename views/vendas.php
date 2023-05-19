@@ -33,8 +33,8 @@
 
     <!-- Preloader -->
     <div class="preloader flex-column justify-content-center align-items-center">
-      <img class="animation__shake" src="<?= url("/views/assets/img/favicon.ico"); ?>" alt="AdminLTELogo"
-        height="60" width="60">
+      <img class="animation__shake" src="<?= url("/views/assets/img/favicon.ico"); ?>" alt="AdminLTELogo" height="60"
+        width="60">
     </div>
 
     <?php include 'partials/menus.php'; ?>
@@ -85,6 +85,7 @@
                     <thead>
                       <tr>
                         <th>CPF</th>
+                        <th>Valor</th>
                         <th>Forma de Pagamento</th>
                         <th>Número de Parcelas</th>
                         <th>Data da Venda</th>
@@ -100,6 +101,22 @@
                         <tr id="order-<?= $order->id; ?>">
                           <td id="orderCpf-<?= $order->id; ?>">
                             <?= $order->customer->cpf; ?>
+                          </td>
+
+                          <td id="orderValue-<?= $order->id; ?>">
+                            <?php 
+                            $orderValue = 0.0;
+
+                            foreach ($order->orderDetails as $orderDetail) {
+                              $orderValue += $orderDetail->valor;
+                            }
+
+                            $orderValue = str_replace(".", ",", $orderValue);
+
+                            $order->totalValue = "R$ " . $orderValue;
+                            ?>
+
+                            <?= $order->totalValue; ?>
                           </td>
 
                           <td id="orderPaymentMethod-<?= $order->id; ?>">
@@ -323,7 +340,7 @@
       <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
-    
+
     <?php include "partials/footer.php"; ?>
 
     <!-- Control Sidebar -->

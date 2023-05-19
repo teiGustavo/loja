@@ -34,6 +34,15 @@ class AuthController extends MainController
         echo $this->view->render("signup", $params);
     }
 
+    public function logout(): void
+    {
+        //Define a sessão ou cookie "loggged" como falso
+        initializeSessions(["token" => "", "logged" => false]); 
+                
+        //Retorna o usuário para a tela de login
+        $this->router->redirect("loja.auth.logar");
+    }
+
     //Responsável por validar um email
     public function validateEmail(string $email): bool
     {
@@ -118,18 +127,10 @@ class AuthController extends MainController
                 //Envia o usuário para a tela home
                 $this->router->redirect("loja.home");
             } else {
-                //Define a sessão ou cookie "loggged" como falso
-                initializeSessions(["logged" => false]); 
-                
-                //Retorna o usuário para a tela de login
-                $this->router->redirect("loja.auth.logar");
+                $this->logout();
             }
         } else {
-            //Define a sessão ou cookie "loggged" como falso
-            initializeSessions(["logged" => false]); 
-                
-            //Retorna o usuário para a tela de login
-            $this->router->redirect("loja.auth.logar");
+            $this->logout();
         }
     }
 }

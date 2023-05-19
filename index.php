@@ -12,14 +12,12 @@ $router->namespace("Loja\Controllers");
 
 $router->group("", AuthMiddleware::class);
 $router->get("/", "HomeController:index", "loja.home");
-$router->get("/testes", "HomeController:testes", "loja.testes");
 
 $router->group("produtos", AuthMiddleware::class);
 $router->get("/", "ProductController:index", "loja.produtos");
 $router->post("/create", "ProductController:createProduct", "loja.cadastrar.produto");
 $router->post("/delete", "ProductController:deleteProduct", "loja.excluir.produto");
 $router->post("/update", "ProductController:updateProduct", "loja.editar.produto");
-$router->post("/ajax", "ProductController:ajax", "loja.ajax.produto");
 
 $router->group("produtos/categorias", AuthMiddleware::class);
 $router->get("/", "CategoryController:index", "loja.categorias");
@@ -48,6 +46,7 @@ $router->post("/update", "PaymentController:updatePayment", "loja.editar.formapg
 $router->group("auth");
 $router->get("/sign-in", "AuthController:signIn", "loja.auth.logar");
 $router->get("/sign-up", "AuthController:signUp", "loja.auth.cadastrar");
+$router->get("/logout", "AuthController:logout", "loja.auth.sair");
 $router->post("/sign-in/authenticate", "AuthController:authenticate", "loja.auth.authenticate");
 
 //Responsável por despachar as rotas

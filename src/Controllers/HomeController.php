@@ -75,11 +75,4 @@ class HomeController extends MainController
         //Renderiza a página (view Home)
         echo $this->view->render("home", $params);
     }
-
-    public function testes()
-    {
-        $params = [];
-
-        echo $this->view->render("testes", $params);
-    }
 }
