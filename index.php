@@ -13,6 +13,11 @@ $router->namespace("Loja\Controllers");
 $router->group("", AuthMiddleware::class);
 $router->get("/", "HomeController:index", "loja.home");
 
+$router->group("/form", AuthMiddleware::class);
+$router->post("/create", "FormController:create", "form.create");
+$router->post("/update", "FormController:update", "form.update");
+$router->post("/delete", "FormController:delete", "form.delete");
+
 $router->group("produtos", AuthMiddleware::class);
 $router->get("/", "ProductController:index", "loja.produtos");
 $router->post("/create", "ProductController:createProduct", "loja.cadastrar.produto");
@@ -21,9 +26,9 @@ $router->post("/update", "ProductController:updateProduct", "loja.editar.produto
 
 $router->group("produtos/categorias", AuthMiddleware::class);
 $router->get("/", "CategoryController:index", "loja.categorias");
-$router->post("/create", "CategoryController:createCategory", "loja.cadastrar.categoria");
-$router->post("/delete", "CategoryController:deleteCategory", "loja.excluir.categoria");
-$router->post("/update", "CategoryController:editCategory", "loja.editar.categoria");
+$router->post("/create", "CategoryController:create", "category.create");
+$router->post("/update", "CategoryController:update", "category.update");
+$router->post("/delete", "CategoryController:delete", "category.delete");
 
 $router->group("clientes", AuthMiddleware::class);
 $router->get("/", "CustomerController:index", "loja.clientes");

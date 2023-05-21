@@ -3,6 +3,7 @@
 namespace Loja\Controllers;
 
 use CoffeeCode\DataLayer\Connect;
+use Loja\Models\Category;
 use Loja\Models\Customer;
 use Loja\Models\Payment;
 use Loja\Models\Order;

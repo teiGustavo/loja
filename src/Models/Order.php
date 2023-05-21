@@ -37,17 +37,6 @@ class Order extends DataLayer
         return $this;
     }
 
- /*    public function getPaymentMethod(): Order
-    {
-        $payment = ((new Payment())->findById($this->formapgto)->data());
-        
-        $this->methodPayment = $payment->descricao;
-        $this->methodPaymentTimesUsed = $payment->timesUsed;
-        $this->methodPaymentTotalValue = $payment->totalValue; 
-
-       return $this;
-    }  */
-
     public function getCustomer(): Order
     {
         $this->customer = (new Customer())->findById(intval($this->cliente))->data();

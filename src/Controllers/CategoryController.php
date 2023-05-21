@@ -23,33 +23,81 @@ class CategoryController extends MainController
         ];
 
         //Renderiza a página (view Categorias)
-        echo $this->view->render("categorias", $params);
+        echo $this->view->render("categories", $params);
     }
 
-    public function createCategory(array $data): void
+    public function create(array $data): void
     {
-        $categoryName = filter_var($data["name"], FILTER_SANITIZE_STRING);
+        $data = filter_var_array($data, FILTER_SANITIZE_STRING);
+
+        if (in_array("", $data)) {
+            $callback["message"] = "Por favor, informe todos os campos!";
+            echo json_encode($callback);
+
+            return;
+        }
 
         $category = new Category();
-        $category->nome = $categoryName;
+        $category->nome = $data["nome"];
         $category->save();
+
+        $category = (new Category())
+            ->find("", "", "codigo_categoria, nome, date_format(data_cadastro, '%d/%m/%Y') as data_cadastro")
+            ->order("codigo_categoria DESC")
+            ->limit(1)
+            ->fetch();
+
+        $callback["message"] = "";
+        $callback["category"] = $this->view->render("fragments/category", ["category" => $category]);
+        echo json_encode($callback);
     }
 
-    public function deleteCategory(array $data): void
+    public function update(array $data): void
     {
-        $categoryId = filter_var($data["id"], FILTER_SANITIZE_NUMBER_INT);
+        if (empty($data["id"])) {
+            return;
+        }
 
-        $category = (new Category())->findById($categoryId);
-        $category->destroy();
+        $id = filter_var($data["id"], FILTER_VALIDATE_INT);
+        $data = filter_var_array($data, FILTER_SANITIZE_STRING);
+
+        if (in_array("", $data)) {
+            $callback["message"] = "Por favor, informe todos os campos!";
+            echo json_encode($callback);
+
+            return;
+        }
+
+        $category = (new Category())->findById($id);
+        $category->nome = $data["nome"];
+        $category->save();
+
+        $category = (new Category())->findById($id, "codigo_categoria, nome, date_format(data_cadastro, '%d/%m/%Y') as data_cadastro");
+
+        $callback["message"] = "";
+        $callback["category"] = $this->view->render("fragments/category", ["category" => $category]);
+
+        echo json_encode($callback);
     }
 
-    public function editCategory(array $data): void
+    public function delete(array $data): void
     {
-        $categoryId = filter_var($data["id"], FILTER_SANITIZE_NUMBER_INT);
-        $categoryName = filter_var($data["name"], FILTER_SANITIZE_STRING);
+        if (empty($data["id"])) {
+            return;
+        }
 
-        $category = (new Category())->findById($categoryId);
-        $category->nome = $categoryName;
-        $category->save();
+        $id = filter_var($data["id"], FILTER_VALIDATE_INT);
+
+        $category = (new Category())->findById($id);
+        if ($category) {
+            if ($category->destroy()) {
+                $callback["remove"] = true;
+            } else {
+                $callback["remove"] = false;
+                $callback["messages"] = "Não foi possível excluir este campo!";
+            }
+        }
+
+        echo json_encode($callback);
     }
 }
