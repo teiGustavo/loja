@@ -136,7 +136,7 @@ $this->layout("_template", $params);
         addproduct($("#nome_produto_add").val());
 
         $.ajax({
-            url: "<?= $router->route("loja.cadastrar.produto"); ?>",
+            url: "<?= $router->route("product.create"); ?>",
             dataType: "json",
             type: "POST",
             data: {
@@ -150,7 +150,7 @@ $this->layout("_template", $params);
         removeproduct($(this).val());
 
         $.ajax({
-            url: "<?= $router->route("loja.excluir.produto"); ?>",
+            url: "<?= $router->route("product.delete"); ?>",
             dataType: "json",
             type: "POST",
             data: {
@@ -180,7 +180,7 @@ $this->layout("_template", $params);
             modifyproduct(id, $("#nome_produto_edit").val());
 
             $.ajax({
-                url: "<?= $router->route("loja.editar.produto"); ?>",
+                url: "<?= $router->route("product.update"); ?>",
                 dataType: "json",
                 type: "POST",
                 data: {

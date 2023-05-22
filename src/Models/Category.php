@@ -11,4 +11,13 @@ class Category extends DataLayer
          //Instancia o construtor da Classe pai (DataLayer)
          parent::__construct("categorias", ["nome"], "codigo_categoria", false);
      }
+
+     public function getProduct(): Category
+     {
+         $products = (new Product())->find("categoria = {$this->codigo_categoria}");
+         $this->qtdProducts = $products->count();
+         $this->products = $products->fetch();
+
+         return $this;
+     }
 }

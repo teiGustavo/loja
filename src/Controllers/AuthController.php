@@ -40,7 +40,7 @@ class AuthController extends MainController
         initializeSessions(["token" => "", "logged" => false]); 
                 
         //Retorna o usuário para a tela de login
-        $this->router->redirect("loja.auth.logar");
+        $this->router->redirect("auth.sign-in");
     }
 
     //Responsável por validar um email
@@ -125,7 +125,7 @@ class AuthController extends MainController
                 initializeSessions(["token" => $jwt, "logged" => true]);
 
                 //Envia o usuário para a tela home
-                $this->router->redirect("loja.home");
+                $this->router->redirect("home");
             } else {
                 $this->logout();
             }

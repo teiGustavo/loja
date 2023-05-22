@@ -325,7 +325,7 @@
     //cpf = CPF.unmask().val();
 
     $.ajax({
-      url: "<?= $router->route("loja.cadastrar.cliente"); ?>",
+      url: "<?= $router->route("customer.create"); ?>",
       dataType: "json",
       type: "POST",
       data: {
@@ -346,7 +346,7 @@
     removeCustomer($(this).val());
 
     $.ajax({
-      url: "<?= $router->route("loja.excluir.cliente"); ?>",
+      url: "<?= $router->route("customer.delete"); ?>",
       dataType: "json",
       type: "POST",
       data: {
@@ -395,7 +395,7 @@
       //cpf = CPF_EDIT.unmask().val();
 
       $.ajax({
-        url: "<?= $router->route("loja.editar.cliente"); ?>",
+        url: "<?= $router->route("customer.update"); ?>",
         dataType: "json",
         type: "POST",
         data: {

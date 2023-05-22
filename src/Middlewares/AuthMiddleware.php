@@ -15,7 +15,7 @@ class AuthMiddleware
 
         //Recupera o token salvo no cookie ou sessão
         if (!isset($_SESSION["token"]) || $_SESSION["token"] == "") {
-            $this->router->redirect("loja.auth.logar");
+            $this->router->redirect("auth.sign-in");
         }
 
         $jwt = $_SESSION["token"];
@@ -63,7 +63,7 @@ class AuthMiddleware
         //Verifica se o usuário não está autenticado
         if ($this->isAuth() == false) {
             //Caso não esteja, é feito um redirecionamento para a rota de login
-            return $router->redirect("loja.auth.logar");
+            return $router->redirect("auth.sign-in");
         }
 
         //Continua a rota requisitada caso esteja devidamente autenticado

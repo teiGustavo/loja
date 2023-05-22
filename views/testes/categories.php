@@ -132,7 +132,7 @@ $this->layout("_template", $params);
         addCategory($("#nome_categoria_add").val());
 
         $.ajax({
-            url: "<?= $router->route("loja.cadastrar.categoria"); ?>",
+            url: "<?= $router->route("category.create"); ?>",
             dataType: "json",
             type: "POST",
             data: {
@@ -150,7 +150,7 @@ $this->layout("_template", $params);
         removeCategory($(this).val());
 
         $.ajax({
-            url: "<?= $router->route("loja.excluir.categoria"); ?>",
+            url: "<?= $router->route("category.delete"); ?>",
             dataType: "json",
             type: "POST",
             data: {
@@ -180,7 +180,7 @@ $this->layout("_template", $params);
             modifyCategory(id, $("#nome_categoria_edit").val());
 
             $.ajax({
-                url: "<?= $router->route("loja.editar.categoria"); ?>",
+                url: "<?= $router->route("category.update"); ?>",
                 dataType: "json",
                 type: "POST",
                 data: {

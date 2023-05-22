@@ -342,7 +342,7 @@
     addProduct(name, price, qtd, category);
 
     $.ajax({
-      url: "<?= $router->route("loja.cadastrar.produto"); ?>",
+      url: "<?= $router->route("product.create"); ?>",
       dataType: "json",
       type: "POST",
       data: {
@@ -363,7 +363,7 @@
     removeProduct($(this).val());
 
     $.ajax({
-      url: "<?= $router->route("loja.excluir.produto"); ?>",
+      url: "<?= $router->route("product.delete"); ?>",
       dataType: "json",
       type: "POST",
       data: {
@@ -409,7 +409,7 @@
       modifyProduct(id, name, price, qtd, category);
 
       $.ajax({
-        url: "<?= $router->route("loja.editar.produto"); ?>",
+        url: "<?= $router->route("product.update"); ?>",
         dataType: "json",
         type: "POST",
         data: {

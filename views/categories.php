@@ -20,8 +20,8 @@ $v->layout("_theme", $params);
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="index.php">Início</a></li>
-            <li class="breadcrumb-item"><a href="produtos.php">Produtos</a></li>
+            <li class="breadcrumb-item"><a href="<?= $router->route("home"); ?>">Início</a></li>
+            <li class="breadcrumb-item"><a href="<?= $router->route("products"); ?>">Produtos</a></li>
             <li class="breadcrumb-item active">Categorias</li>
           </ol>
         </div>
@@ -59,6 +59,7 @@ $v->layout("_theme", $params);
                 <thead>
                   <tr>
                     <th>Nome</th>
+                    <th>Quantidade de Produtos</th>
                     <th>Data de Cadastro</th>
                     <th>Ações</th>
                   </tr>
@@ -67,7 +68,8 @@ $v->layout("_theme", $params);
                   <?php
                   if (!empty($categories)):
                     foreach ($categories as $category):
-                      $v->insert("fragments/category", ["category" => $category]);
+                        $category->getProduct();
+                        $v->insert("fragments/category", ["category" => $category]);
                     endforeach;
                   endif;
                   ?>

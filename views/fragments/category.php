@@ -4,6 +4,11 @@
     </td>
 
     <td>
+        <?= "x" . $category->qtdProducts; ?>
+    </td>
+
+
+    <td>
         <?= $category->data_cadastro; ?>
     </td>
 

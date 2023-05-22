@@ -32,19 +32,8 @@
         <?php include "partials/menus.php"; ?>
 
         <?= $this->section("contents"); ?>
-      
-        <footer class="main-footer">
 
-            <div class="float-right d-none d-sm-block">
-
-                <b>ShopGestor - Version</b> 1.0.0
-            </div>
-
-            <strong>
-                Copyright &copy; 2023
-            </strong>
-
-        </footer>
+        <?php include "partials/footer.php"; ?>
 
     </div>
 

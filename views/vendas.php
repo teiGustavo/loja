@@ -50,7 +50,7 @@
             </div>
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="index.php">Início</a></li>
+                <li class="breadcrumb-item"><a href="<?= $router->route("home"); ?>">Início</a></li>
                 <li class="breadcrumb-item active">Vendas</li>
               </ol>
             </div>
@@ -111,7 +111,7 @@
                               $orderValue += $orderDetail->valor;
                             }
 
-                            $orderValue = str_replace(".", ",", $orderValue);
+                            $orderValue = number_format($orderValue, 2, ",", ".");
 
                             $order->totalValue = "R$ " . $orderValue;
                             ?>
@@ -457,7 +457,7 @@
     addOrder(cpf, paymentMethod, quantity);
 
     $.ajax({
-      url: "<?= $router->route("loja.cadastrar.venda"); ?>",
+      url: "<?= $router->route("order.create"); ?>",
       dataType: "json",
       type: "POST",
       data: {
@@ -473,12 +473,12 @@
     $("#order-" + id).hide(1000);
   }
 
-  //Botao de excluir Vendas
+  //Botão de excluir Vendas
   $("body").on("click", "#btnExcluir", function () {
     removeOrder($(this).val());
 
     $.ajax({
-      url: "<?= $router->route("loja.excluir.venda"); ?>",
+      url: "<?= $router->route("order.delete"); ?>",
       dataType: "json",
       type: "POST",
       data: {
@@ -497,7 +497,7 @@
     PRODUCTS_EDIT.val(null).trigger("change");
   }
 
-  //Botao de editar Vendas
+  //Botão de editar Vendas
   $("body").on("click", "#btnEditar", function () {
     id = $(this).val();
 
@@ -527,7 +527,7 @@
       modifyOrder(id, cpf, paymentMethod, quantity);
 
       $.ajax({
-        url: "<?= $router->route("loja.editar.venda"); ?>",
+        url: "<?= $router->route("order.update"); ?>",
         dataType: "json",
         type: "POST",
         data: {

@@ -248,7 +248,7 @@
     addPaymentMethod(desc);
 
     $.ajax({
-      url: "<?= $router->route("loja.cadastrar.formapgto"); ?>",
+      url: "<?= $router->route("payment-method.create"); ?>",
       dataType: "json",
       type: "POST",
       data: {
@@ -265,7 +265,7 @@
     removePayment($(this).val());
 
     $.ajax({
-      url: "<?= $router->route("loja.excluir.formapgto"); ?>",
+      url: "<?= $router->route("payment-method.delete"); ?>",
       dataType: "json",
       type: "POST",
       data: {
@@ -294,7 +294,7 @@
       modifyCustomer(id, desc);
 
       $.ajax({
-        url: "<?= $router->route("loja.editar.formapgto"); ?>",
+        url: "<?= $router->route("payment-method.update"); ?>",
         dataType: "json",
         type: "POST",
         data: {

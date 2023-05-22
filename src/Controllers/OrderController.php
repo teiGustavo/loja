@@ -10,7 +10,7 @@ use Loja\Models\Product;
 
 class OrderController extends MainController
 {
-    protected $model;
+    protected Order $model;
 
     public function __construct($router)
     {
@@ -89,10 +89,8 @@ class OrderController extends MainController
             $customer = (new Customer())->find("cpf = '{$cpf}'", "", "id")->fetch();
             $customer == null ? exit : $customer = $customer->data();
 
-            $customerId = $customer->id;
-
             //echo json_encode($customer, JSON_UNESCAPED_UNICODE);
-            return $customerId;
+            return $customer->id;
         }
 
         function getLastOrderId(): int

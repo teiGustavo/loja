@@ -266,7 +266,7 @@
     addCategory(name);
 
     $.ajax({
-      url: "<?= $router->route("loja.cadastrar.categoria"); ?>",
+      url: "<?= $router->route("category.create"); ?>",
       dataType: "json",
       type: "POST",
       data: {
@@ -284,7 +284,7 @@
     removeCategory($(this).val());
 
     $.ajax({
-      url: "<?= $router->route("loja.excluir.categoria"); ?>",
+      url: "<?= $router->route("category.delete"); ?>",
       dataType: "json",
       type: "POST",
       data: {
@@ -314,7 +314,7 @@
       modifyCategory(id, $("#nome_categoria_edit").val());
 
       $.ajax({
-        url: "<?= $router->route("loja.editar.categoria"); ?>",
+        url: "<?= $router->route("category.update"); ?>",
         dataType: "json",
         type: "POST",
         data: {

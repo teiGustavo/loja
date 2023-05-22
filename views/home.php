@@ -92,7 +92,7 @@
                 <div class="icon">
                   <i class="ion ion-stats-bars"></i>
                 </div>
-                <a href="<?= $router->route("loja.produtos"); ?>" class="small-box-footer">Ver mais <i
+                <a href="<?= $router->route("products"); ?>" class="small-box-footer">Ver mais <i
                     class="fas fa-arrow-circle-right"></i></a>
               </div>
             </div>
@@ -110,7 +110,7 @@
                 <div class="icon">
                   <i class="ion ion-person-add"></i>
                 </div>
-                <a href="<?= $router->route("loja.clientes"); ?>" class="small-box-footer">Ver mais <i
+                <a href="<?= $router->route("customers"); ?>" class="small-box-footer">Ver mais <i
                     class="fas fa-arrow-circle-right"></i></a>
               </div>
             </div>

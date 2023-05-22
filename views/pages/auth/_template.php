@@ -34,7 +34,7 @@
                     <img src="<?= url("/views/assets/img/favicon.ico"); ?>" alt="Favicon.ico" style="width: 5vw;">
                 </div>
 
-                <form class="needs-validation" method="POST" action="<?= $router->route("loja.auth.authenticate"); ?>" id="authForm">
+                <form class="needs-validation" method="POST" action="<?= $router->route("auth.authenticate"); ?>" id="authForm">
                     <div class="mb-3">
                         <label for="exampleInputEmail1" class="form-label">Email</label>
                         <input type="email" class="form-control" id="inputEmail" name="email" aria-describedby="emailHelp" required>

@@ -1,5 +1,9 @@
 <?php
 
+/** @noinspection PhpUndefinedFieldInspection */
+/** @noinspection PhpUnused */
+/** @noinspection PhpUndefinedVariableInspection */
+
 namespace Loja\Controllers;
 
 use Loja\Models\Category;

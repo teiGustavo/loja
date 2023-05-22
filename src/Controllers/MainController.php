@@ -1,16 +1,17 @@
 <?php
 
 namespace Loja\Controllers;
+use CoffeeCode\Router\Router;
 use League\Plates\Engine;
 
 abstract class MainController
 {
-    protected $router;
-    protected $view;
+    protected Router $router;
+    protected Engine $view;
 
     public function __construct($router, $globals = [], $dir = null)
     {
-        //Define o diretório da localização das views (templates)
+        //Define o diretório da localização das views
         $dir = $dir ?? dirname(__DIR__, 2) . "/views/";
 
         //Instancia o objeto das views (Plates)
@@ -19,7 +20,7 @@ abstract class MainController
         //Define o roteador
         $this->router = $router;
 
-        //Adiciona o roteador globalmente a todos os Controllers que extendam o MainController
+        //Adiciona o roteador globalmente a todos os Controllers que estendam o MainController
         $this->view->addData([
             "router" => $this->router,
             "title_prefix" => TITLE_PREFIX
