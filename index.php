@@ -27,6 +27,7 @@ $router->post("/update", "ProductController:updateProduct", "product.update");
 $router->group("products/categories", AuthMiddleware::class);
 $router->get("/", "CategoryController:index", "categories");
 $router->post("/create", "CategoryController:create", "category.create");
+$router->post("/find", "CategoryController:find", "category.find");
 $router->post("/update", "CategoryController:update", "category.update");
 $router->post("/delete", "CategoryController:delete", "category.delete");
 

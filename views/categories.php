@@ -68,8 +68,8 @@ $v->layout("_theme", $params);
                   <?php
                   if (!empty($categories)):
                     foreach ($categories as $category):
-                        $category->getProduct();
-                        $v->insert("fragments/category", ["category" => $category]);
+                      $category->getProduct();
+                      $v->insert("fragments/category", ["category" => $category]);
                     endforeach;
                   endif;
                   ?>
@@ -198,6 +198,18 @@ $v->layout("_theme", $params);
 
       var data = $(this).data();
       var div = $(this).parent().parent();
+
+      $.ajax({
+        url: data.action,
+        data: {
+          id : data.id
+        },
+        type: "POST",
+        dataType: "JSON",
+        success: function (callback) {
+          $("#nome_categoria_edit").val(callback.category.nome);
+        }
+      });
 
       $("#form_edit_categoria").submit(function (e) {
         e.preventDefault();

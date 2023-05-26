@@ -56,6 +56,21 @@ class CategoryController extends MainController
         echo json_encode($callback);
     }
 
+    public function find(array $data): void
+    {
+        if (empty($data["id"])) {
+            return;
+        }
+
+        $id = filter_var($data["id"], FILTER_VALIDATE_INT);
+
+        $category = (new Category())->findById($id);
+        
+        $callback["category"] = $category->data();
+
+        echo json_encode($callback);
+    }
+
     public function update(array $data): void
     {
         if (empty($data["id"])) {
@@ -77,6 +92,7 @@ class CategoryController extends MainController
         $category->save();
 
         $category = (new Category())->findById($id, "codigo_categoria, nome, date_format(data_cadastro, '%d/%m/%Y') as data_cadastro");
+        $category->getProduct()->data();
 
         $callback["message"] = "";
         $callback["category"] = $this->view->render("fragments/category", ["category" => $category]);
