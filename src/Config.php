@@ -17,12 +17,12 @@ const DATA_LAYER_CONFIG = [
 ];
 
 //Constante de URL base do site
-const URL_BASE = "http://localhost/GustavoT/loja";
+const URL_BASE = "http://localhost/loja";
 
 //Constante de Título base do site
 const TITLE_PREFIX = "Shop Gestor";
 
-//cosntante que define a chave secreta e única dos tokens da aplicação
+//Constante que define a chave secreta e única dos tokens da aplicação
 const JWT_KEY = "DSHWWTSX2566018GT";
 
 function url(string $path): string

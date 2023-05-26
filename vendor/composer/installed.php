@@ -3,7 +3,7 @@
         'name' => 'gteixeira/loja',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '08d7d103ea301456edfadd6a5f178041ed73d1ab',
+        'reference' => '3f208e206d47c01035de26c42d637710ea542447',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -31,7 +31,7 @@
         'gteixeira/loja' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '08d7d103ea301456edfadd6a5f178041ed73d1ab',
+            'reference' => '3f208e206d47c01035de26c42d637710ea542447',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

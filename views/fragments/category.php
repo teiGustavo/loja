@@ -4,7 +4,7 @@
     </td>
 
     <td>
-        <?= "x" . $category->qtdProducts; ?>
+        <?= $category->qtdProducts != "" ? "x" . $category->qtdProducts : "x0"; ?>
     </td>
 
 

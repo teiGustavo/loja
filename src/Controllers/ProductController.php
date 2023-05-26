@@ -7,8 +7,6 @@ use Loja\Models\Product;
 
 class ProductController extends MainController
 {
-    public $arrayProducts;
-
     public function getProducts(): array
     {
         $model = new Product();
@@ -42,40 +40,86 @@ class ProductController extends MainController
         ];
 
         //Renderiza a página (view Categorias)
-        echo $this->view->render("produtos", $params);
+        echo $this->view->render("products", $params);
     }
 
-    public function createProduct(array $data): void
+    public function create(array $data): void
     {
-        $productName = filter_var($data["name"], FILTER_SANITIZE_STRING);
-        $productPreco = filter_var($data["price"], FILTER_SANITIZE_STRING);
-        $productQuantidade = filter_var($data["qtd"], FILTER_SANITIZE_NUMBER_INT);
-        $productCategoria = filter_var($data["category"], FILTER_SANITIZE_NUMBER_INT);
+        $data = filter_var_array($data, FILTER_SANITIZE_STRING);
 
-        $productPreco = str_replace(["R$", "."], "", $productPreco);
+        if (in_array("", $data)) {
+            $callback["message"] = "Por favor, informe todos os campos!";
+            echo json_encode($callback);
+
+            return;
+        }
+
+        $productPreco = str_replace(["R$", "."], "", $data["price"]);
         $productPreco = str_replace(",", ".", $productPreco);
 
         $product = new Product();
-        $product->nome = $productName;
+        $product->nome = $data["name"];
         $product->preco = $productPreco;
-        $product->quantidade = $productQuantidade;
-        $product->categoria = $productCategoria;
-        
-        if (!$product->save())
-            echo json_encode($product->fail()->getMessage());
+        $product->quantidade = $data["qtd"];
+        $product->categoria = $data["category"];
+        $product->save();
+
+        $product = (new Product())
+            ->find("", "", "codigo_produto, 
+                nome, 
+                CONCAT('R$ ', REPLACE(REPLACE(REPLACE(FORMAT(ROUND(preco, 2), 2),'.',';'),',','.'),';',',')) as preco, 
+                quantidade, 
+                date_format(data_cadastro, '%d/%m/%Y') as data_cadastro"
+            )
+            ->order("codigo_produto DESC")
+            ->limit(1)
+            ->fetch();
+
+        $callback["message"] = "";
+        $callback["product"] = $this->view->render("fragments/product", ["product" => $product]);
+
+        echo json_encode($callback);
     }
 
-    public function deleteProduct(array $data): void
+    public function delete(array $data): void
     {
-        $productId = filter_var($data["id"], FILTER_SANITIZE_NUMBER_INT);
+        if (empty($data["id"])) {
+            return;
+        }
 
-        $product = (new product())->findById($productId);
+        $id = filter_var($data["id"], FILTER_VALIDATE_INT);
+        $callback["remove"] = false;
 
-        if (!$product->destroy())
-            echo json_encode($product->fail()->getMessage());
+        $product = (new Product())->findById($id);
+
+        if ($product) {
+            if ($product->destroy()) {
+                $callback["remove"] = true;
+            } else {
+                $callback["remove"] = false;
+                $callback["messages"] = "Não foi possível excluir este campo!";
+            }
+        }
+
+        echo json_encode($callback);
     }
 
-    public function updateProduct(array $data): void
+    public function find(array $data): void
+    {
+        if (empty($data["id"])) {
+            return;
+        }
+
+        $id = filter_var($data["id"], FILTER_VALIDATE_INT);
+
+        $product = (new Product())->findById($id);
+
+        $callback["product"] = $product->data();
+
+        echo json_encode($callback);
+    }
+
+    public function update(array $data): void
     {
         $productId = filter_var($data["id"], FILTER_SANITIZE_NUMBER_INT);
         $productName = filter_var($data["name"], FILTER_SANITIZE_STRING);

@@ -20,9 +20,10 @@ $router->post("/delete", "FormController:delete", "form.delete");
 
 $router->group("products", AuthMiddleware::class);
 $router->get("/", "ProductController:index", "products");
-$router->post("/create", "ProductController:createProduct", "product.create");
-$router->post("/delete", "ProductController:deleteProduct", "product.delete");
-$router->post("/update", "ProductController:updateProduct", "product.update");
+$router->post("/create", "ProductController:create", "product.create");
+$router->post("/delete", "ProductController:delete", "product.delete");
+$router->post("/find", "ProductController:find", "product.find");
+$router->post("/update", "ProductController:update", "product.update");
 
 $router->group("products/categories", AuthMiddleware::class);
 $router->get("/", "CategoryController:index", "categories");

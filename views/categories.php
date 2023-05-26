@@ -97,7 +97,7 @@ $v->layout("_theme", $params);
           <form id="form_add_categoria" action="<?= $router->route("category.create"); ?>">
             <div class="modal-body">
               <div class="form-group">
-                <label for="nome_categoria">Nome</label>
+                <label for="nome_categoria_add">Nome</label>
                 <input type="text" class="form-control" id="nome_categoria_add" name="nome"
                   placeholder="Informe o nome da nova categoria">
               </div>

@@ -43,7 +43,8 @@
     <script src="<?= url("/views/assets/js/adminlte.min.js"); ?>"></script>
     <script src="<?= url("/views/assets/js/demo.js"); ?>"></script>
     <script src="<?= url("/views/assets/js/bootbox.min.js"); ?>"></script>
-    <script src="<?= url("/views/assets/js/categorias.js"); ?>"></script>
+
+    <?= $this->section("script"); ?>
 
 </body>
 
