@@ -34,9 +34,10 @@ $router->post("/delete", "CategoryController:delete", "category.delete");
 
 $router->group("customers", AuthMiddleware::class);
 $router->get("/", "CustomerController:index", "customers");
-$router->post("/create", "CustomerController:createCustomer", "customer.create");
-$router->post("/delete", "CustomerController:deleteCustomer", "customer.delete");
-$router->post("/update", "CustomerController:updateCustomer", "customer.update");
+$router->post("/create", "CustomerController:create", "customer.create");
+$router->post("/delete", "CustomerController:delete", "customer.delete");
+$router->post("/find", "CustomerController:find", "customer.find");
+$router->post("/update", "CustomerController:update", "customer.update");
 
 $router->group("orders", AuthMiddleware::class);
 $router->get("/", "OrderController:index", "orders");

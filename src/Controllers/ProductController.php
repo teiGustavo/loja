@@ -113,6 +113,7 @@ class ProductController extends MainController
         $id = filter_var($data["id"], FILTER_VALIDATE_INT);
 
         $product = (new Product())->findById($id);
+        $product->preco = number_format($product->preco, "2", ",", ".");
 
         $callback["product"] = $product->data();
 
@@ -121,22 +122,42 @@ class ProductController extends MainController
 
     public function update(array $data): void
     {
-        $productId = filter_var($data["id"], FILTER_SANITIZE_NUMBER_INT);
-        $productName = filter_var($data["name"], FILTER_SANITIZE_STRING);
-        $productPreco = filter_var($data["price"], FILTER_SANITIZE_STRING);
-        $productQuantidade = filter_var($data["qtd"], FILTER_SANITIZE_NUMBER_INT);
-        $productCategoria = filter_var($data["category"], FILTER_SANITIZE_NUMBER_INT);
+        if (empty($data["id"])) {
+            return;
+        }
 
-        $productPreco = str_replace(["R$", "."], "", $productPreco);
+        $id = filter_var($data["id"], FILTER_VALIDATE_INT);
+        $data = filter_var_array($data, FILTER_SANITIZE_STRING);
+
+        if (in_array("", $data)) {
+            $callback["message"] = "Por favor, informe todos os campos!";
+            echo json_encode($callback);
+
+            return;
+        }
+
+        $product = (new Product())->findById($id);
+        $product->nome = $data["name"];
+
+        $productPreco = str_replace(["R$", "."], "", $data["price"]);
         $productPreco = str_replace(",", ".", $productPreco);
-
-        $product = (new Product())->findById($productId);
-        $product->nome = $productName;
         $product->preco = $productPreco;
-        $product->quantidade = $productQuantidade;
-        $product->categoria = $productCategoria;
 
-        if (!$product->save())
-            echo json_encode($product->fail()->getMessage());
+        $product->quantidade = $data["qtd"];
+        $product->categoria = $data["category"];
+        $product->save();
+
+        $product = (new Product())
+            ->findById($id, "codigo_produto, 
+                nome, 
+                CONCAT('R$ ', REPLACE(REPLACE(REPLACE(FORMAT(ROUND(preco, 2), 2),'.',';'),',','.'),';',',')) as preco, 
+                quantidade, 
+                date_format(data_cadastro, '%d/%m/%Y') as data_cadastro"
+            );
+
+        $callback["message"] = "";
+        $callback["product"] = $this->view->render("fragments/product", ["product" => $product]);
+
+        echo json_encode($callback);
     }
 }

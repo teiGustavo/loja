@@ -43,10 +43,10 @@ class CustomerController extends MainController
         ];
 
         //Renderiza a página
-        echo $this->view->render("clientes", $params);
+        echo $this->view->render("customers", $params);
     }
 
-    public function createCustomer(array $data): void
+    public function create(array $data): void
     {
         function generateUsername(): string
         {
@@ -73,26 +73,38 @@ class CustomerController extends MainController
             return $password;
         }
 
-        $customerCpf = filter_var($data["cpf"], FILTER_SANITIZE_STRING);
-        $customerName = filter_var($data["name"], FILTER_SANITIZE_STRING);
-        $customerEmail = filter_var($data["email"], FILTER_SANITIZE_EMAIL);
-        $customerDateBirth = filter_var($data["dateBirth"], FILTER_SANITIZE_STRING);
-        $customerUsername = generateUsername();
-        $customerPassword = generatePassword();
+        $data = filter_var_array($data, FILTER_SANITIZE_STRING);
+
+        if (in_array("", $data)) {
+            $callback["message"] = "Por favor, informe todos os campos!";
+            echo json_encode($callback);
+
+            return;
+        }
 
         $customer = $this->model;
-        $customer->cpf = $customerCpf;
-        $customer->nome = $customerName;
-        $customer->email = $customerEmail;
-        $customer->usuario = $customerUsername;
-        $customer->senha = $customerPassword;
-        $customer->datanasc = $customerDateBirth;
+        $customer->cpf = $data["cpf"];
+        $customer->nome = $data["name"];
+        $customer->email = $data["email"];
+        $customer->usuario = generateUsername();
+        $customer->senha = generatePassword();
+        $customer->datanasc = $data["datanasc"];
+        $customer->save();
 
-        if (!$customer->save())
-            echo json_encode($customer->fail()->getMessage(), JSON_UNESCAPED_UNICODE); 
+        $customer->find("", "", "
+            cpf, 
+            nome,
+            email,
+            datacadastro
+        ");
+
+        $callback["message"] = "";
+        $callback["customer"] = $this->view->render("fragments/customer", ["customer" => $customer]);
+
+        echo json_encode($callback);
     }
 
-    public function deleteCustomer(array $data): void
+    public function delete(array $data): void
     {
         $customerId = filter_var($data["id"], FILTER_SANITIZE_NUMBER_INT);
 
@@ -100,7 +112,7 @@ class CustomerController extends MainController
         $customer->destroy();
     }
 
-    public function updateCustomer(array $data): void
+    public function update(array $data): void
     {
         $customerId = filter_var($data["id"], FILTER_SANITIZE_NUMBER_INT);
         $customerCpf = filter_var($data["cpf"], FILTER_SANITIZE_STRING);

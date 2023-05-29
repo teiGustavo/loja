@@ -159,27 +159,28 @@ $v->layout("_theme", $params);
                             </button>
                         </div>
 
-                        <form id="form_edit_produto">
+                        <form id="form_edit_produto" action="<?= $router->route("product.update"); ?>">
+                            <input type="hidden" id="id_produto_edit" name="id" value="">
                             <div class="modal-body">
                                 <div class="form-group">
                                     <label for="nome_produto_edit">Nome</label>
-                                    <input type="text" class="form-control" id="nome_produto_edit" value="" autofocus>
+                                    <input type="text" class="form-control" id="nome_produto_edit" value="" name="name" autofocus>
                                     <input type="hidden" id="nome_produto_edit" value="">
                                 </div>
                                 <div class="form-group">
                                     <label for="preco_produto_edit">Preço</label>
-                                    <input type="text" class="form-control" id="preco_produto_edit" value="" autofocus>
+                                    <input type="text" class="form-control" id="preco_produto_edit" value="" name="price" autofocus>
                                     <input type="hidden" id="preco_produto_edit" value="">
                                 </div>
                                 <div class="form-group">
                                     <label for="quantidade_produto_edit">Quantidade</label>
-                                    <input type="number" class="form-control" id="quantidade_produto_edit" value=""
+                                    <input type="number" class="form-control" id="quantidade_produto_edit" name="qtd" value=""
                                            autofocus>
                                     <input type="hidden" id="quantidade_produto_edit" value="">
                                 </div>
                                 <div class="form-group">
                                     <label for="categoria_produto_edit" class="form-label">Categoria</label>
-                                    <select class="select" id="categoria_produto_edit">
+                                    <select class="select" id="categoria_produto_edit" name="category">
 
                                         <?php foreach ($categories as $category):
                                             ?>
@@ -220,6 +221,7 @@ $v->layout("_theme", $params);
     <script>
         const PRICE = $("#preco_produto_add");
         const PRICE_EDIT = $("#preco_produto_edit");
+        const BODY = $("body");
 
         PRICE.mask("000.000.000.000.000,00", {reverse: true});
         PRICE_EDIT.mask("000.000.000.000.000,00", {reverse: true});
@@ -249,17 +251,22 @@ $v->layout("_theme", $params);
                         if (callback.product) {
                             categories.append(callback.product).fadeIn();
                             $("#nome_produto_add").val("");
+                            $("#preco_produto_add").val("");
+                            $("#quantidade_produto_add").val("");
+                            $("#categoria_produto_add").val("");
                             $("#closeModal").trigger("click");
                         }
                     }
                 });
             });
 
-            $("body").on("click", "[data-update]", function (e) {
+            BODY.on("click", "[data-update]", function (e) {
                 e.preventDefault();
 
                 let data = $(this).data();
                 let div = $(this).parent().parent();
+
+                $("#id_produto_edit").val(data.id);
 
                 $.ajax({
                     url: data.action,
@@ -276,45 +283,42 @@ $v->layout("_theme", $params);
                     }
                 });
 
-                // $("#form_edit_categoria").submit(function (e) {
-                //     e.preventDefault();
-                //
-                //     let form = $(this);
-                //     let categories = $(".categories");
-                //     let feedback = $(".invalid-feedback");
-                //
-                //     $("#btn_salvar_categoria_edit").attr("disabled");
-                //
-                //     $.ajax({
-                //         url: form.attr("action"),
-                //         data: {
-                //             id: data.id,
-                //             nome: $("#nome_categoria_edit").val()
-                //         },
-                //         type: "POST",
-                //         dataType: "JSON",
-                //         success: function (callback) {
-                //             if (callback.message) {
-                //                 feedback.html(callback.message).fadeIn();
-                //             } else {
-                //                 feedback.fadeOut(function () {
-                //                     $(this).html("");
-                //                     $("#nome_categoria_edit").val("");
-                //                 });
-                //             }
-                //
-                //             if (callback.category) {
-                //                 div.fadeOut();
-                //                 categories.append(callback.category).fadeIn();
-                //                 $("#btn_fechar_categoria_edit").trigger("click");
-                //                 $("#btn_salvar_categoria_edit").removeAttr("disabled");
-                //             }
-                //         }
-                //     });
-                // });
+                $("#form_edit_produto").submit(function (e) {
+                    e.preventDefault();
+
+                    let form = $(this);
+                    let products = $(".products");
+                    let feedback = $(".invalid-feedback");
+
+                    $("#btn_salvar_produto_edit").attr("disabled");
+
+                    $.ajax({
+                        url: form.attr("action"),
+                        data: form.serialize(),
+                        type: "POST",
+                        dataType: "JSON",
+                        success: function (callback) {
+                            if (callback.message) {
+                                feedback.html(callback.message).fadeIn();
+                            } else {
+                                feedback.fadeOut(function () {
+                                    $(this).html("");
+                                    $("#nome_produto_edit").val("");
+                                });
+                            }
+
+                            if (callback.product) {
+                                div.fadeOut();
+                                products.append(callback.product).fadeIn();
+                                $("#btn_fechar_produto_edit").trigger("click");
+                                $("#btn_salvar_produto_edit").removeAttr("disabled");
+                            }
+                        }
+                    });
+                });
             });
 
-            $("body").on("click", "[data-delete]", function (e) {
+            BODY.on("click", "[data-delete]", function (e) {
                 e.preventDefault();
 
                 let data = $(this).data();
