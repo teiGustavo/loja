@@ -11,11 +11,9 @@ class ProductController extends MainController
     {
         $model = new Product();
         $products = $model
-            ->find(
-                "",
-                "",
-                "codigo_produto, nome, CONCAT('R$ ', REPLACE(REPLACE(REPLACE(FORMAT(preco, 2),'.',';'),',','.'),';',',')) as preco, quantidade, 
-                        categoria, date_format(data_cadastro, '%d/%m/%Y') as data_cadastro"
+            ->find(columns: "codigo_produto, nome, 
+                CONCAT('R$ ', REPLACE(REPLACE(REPLACE(FORMAT(preco, 2),'.',';'),',','.'),';',',')) as preco, quantidade, 
+                categoria, date_format(data_cadastro, '%d/%m/%Y') as data_cadastro"
             )
             ->fetch(true);
 

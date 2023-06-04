@@ -7,14 +7,11 @@ use Loja\Models\Order;
 
 class PaymentController extends MainController
 {
-    protected $model;
-
-    public function __construct($router)
-    {
+    public function __construct(
+        $router,
+        protected Payment $model = new Payment()
+    ) {
         parent::__construct($router);
-
-        $modelPayment = new Payment();
-        $this->model = $modelPayment;
     }
 
     public function getOrders(): array

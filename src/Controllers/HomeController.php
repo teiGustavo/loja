@@ -3,9 +3,7 @@
 namespace Loja\Controllers;
 
 use CoffeeCode\DataLayer\Connect;
-use Loja\Models\Category;
 use Loja\Models\Customer;
-use Loja\Models\Payment;
 use Loja\Models\Order;
 use Loja\Models\Product;
 
@@ -13,26 +11,17 @@ class HomeController extends MainController
 {
     public function getOrdersQuantity(): int
     {
-        $model = new Order();
-        $countOrders = $model->find()->count();
-
-        return $countOrders;
+        return (new Order())->find()->count();
     }
 
     public function getProductsQuantity(): int
     {
-        $model = new Product();
-        $countProducts = $model->find()->count();
-
-        return $countProducts;
+        return (new Product())->find()->count();
     }
 
     public function getCustomersQuantity(): int
     {
-        $model = new Customer();
-        $countCustomers = $model->find()->count();
-
-        return $countCustomers;
+        return (new Customer())->find()->count();
     }
 
     public function getMonthIncomes(): string
@@ -48,8 +37,7 @@ class HomeController extends MainController
         }
 
         $orders = $connect
-            ->query(
-                "SELECT CONCAT('R$ ', REPLACE(REPLACE(REPLACE(FORMAT(SUM(OD.valor), 2),'.',';'),',','.'),';',',')) AS valor
+            ->query("SELECT CONCAT('R$ ', REPLACE(REPLACE(REPLACE(FORMAT(SUM(OD.valor), 2),'.',';'),',','.'),';',',')) AS valor
                     FROM orders AS O JOIN order_details AS OD ON O.id = OD.venda
                     WHERE DATE_FORMAT(O.datavenda, '%m/%Y') = '$now'" 
             );

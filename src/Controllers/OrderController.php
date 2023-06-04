@@ -10,14 +10,11 @@ use Loja\Models\Product;
 
 class OrderController extends MainController
 {
-    protected Order $model;
-
-    public function __construct($router)
-    {
+    public function __construct(
+        $router,
+        protected Order $model = new Order()
+    ) {
         parent::__construct($router);
-
-        $modelOrder = new Order();
-        $this->model = $modelOrder;
     }
 
     public function getOrder(): array
@@ -25,9 +22,8 @@ class OrderController extends MainController
         $order = $this
             ->model
             ->find(
-                "",
-                "",
-                "id, CONCAT(SUBSTR(cliente,1,3),'.',SUBSTR(cliente,4,3),'.',SUBSTR(cliente,7,3),'-',SUBSTR(cliente,10,2)) as cliente, 
+                columns: "id, CONCAT(SUBSTR(cliente,1,3),'.',SUBSTR(cliente,4,3),'.',
+                SUBSTR(cliente,7,3),'-',SUBSTR(cliente,10,2)) as cliente, 
                     formapgto, numparcelas, date_format(datavenda, '%d/%m/%Y') as datavenda"
             )
             ->fetch(true)
@@ -45,23 +41,17 @@ class OrderController extends MainController
 
     public function getProducts(): array
     {
-        $products = (new Product())->find()->fetch(true);
-
-        return $products;
+        return (new Product())->find()->fetch(true);
     }
 
     public function getOrderDetails(): array
     {
-        $orderDetails = (new OrderDetails())->find()->fetch(true);
-
-        return $orderDetails;
+        return (new OrderDetails())->find()->fetch(true);
     }
 
     public function getCustomers(): array
     {
-        $customers = (new Customer())->find()->fetch(true);
-
-        return $customers;
+        return (new Customer())->find()->fetch(true);
     }
 
     public function index(): void
@@ -95,18 +85,15 @@ class OrderController extends MainController
 
         function getLastOrderId(): int
         {
-            $lastOrderId = (new Order())->find("", "", "id")->order("id DESC")->limit(1)->fetch()->id;
-
-            return $lastOrderId;
+            return (new Order())->find("", "", "id")
+                ->order("id DESC")->limit(1)->fetch()->id;
         }
 
         function saveOrderDetails(array $orderProducts): void
         {
             function getProductValue(int $productId): float
             {
-                $productPrice = (new Product())->findById($productId)->preco;
-
-                return $productPrice;
+                return (new Product())->findById($productId)->preco;
             }
 
             function updateStorage(int $productId): void

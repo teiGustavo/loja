@@ -13,7 +13,11 @@ class CategoryController extends MainController
     public function getCategories(): array
     {
         $model = new Category();
-        $categories = $model->find("", "", "codigo_categoria, nome, date_format(data_cadastro, '%d/%m/%Y') as data_cadastro")->fetch(true);
+        $categories = $model
+            ->find(
+                columns: "codigo_categoria, nome, date_format(data_cadastro, '%d/%m/%Y') as data_cadastro"
+            )
+            ->fetch(true);
 
         return $categories != null ? $categories : [];
     }
@@ -46,7 +50,7 @@ class CategoryController extends MainController
         $category->save();
 
         $category = (new Category())
-            ->find("", "", "codigo_categoria, nome, date_format(data_cadastro, '%d/%m/%Y') as data_cadastro")
+            ->find(columns: "codigo_categoria, nome, date_format(data_cadastro, '%d/%m/%Y') as data_cadastro")
             ->order("codigo_categoria DESC")
             ->limit(1)
             ->fetch();

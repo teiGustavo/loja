@@ -8,14 +8,11 @@ use Uptodown\RandomUsernameGenerator\Generator;
 
 class CustomerController extends MainController
 {
-    protected $model;
-
-    public function __construct($router)
-    {
+    public function __construct(
+        $router,
+        protected Customer $model = new Customer()
+    ) {
         parent::__construct($router);
-
-        $modelCustomer = new Customer();
-        $this->model = $modelCustomer;
     }
 
     public function getCustomers(): array
@@ -23,10 +20,9 @@ class CustomerController extends MainController
         $customers = $this
             ->model
             ->find(
-                "",
-                "",
-                "id, cpf, 
-                    nome, date_format(datanasc, '%d/%m/%Y') as datanasc, date_format(datacadastro, '%d/%m/%Y') as datacadastro, email"
+                columns: "id, cpf, 
+                    nome, date_format(datanasc, '%d/%m/%Y') as datanasc, 
+                    date_format(datacadastro, '%d/%m/%Y') as datacadastro, email"
             )
             ->fetch(true)
         ;
@@ -52,9 +48,8 @@ class CustomerController extends MainController
         {
             $generator = new Generator();
             $username = $generator->makeNew();
-            $username = substr($username, 0, 30);
 
-            return $username;
+            return substr($username, 0, 30);
         }
 
         function generatePassword(): string
@@ -68,9 +63,7 @@ class CustomerController extends MainController
                 ->setOptionValue(ComputerPasswordGenerator::OPTION_SYMBOLS, false)
             ;
 
-            $password = $generator->generatePassword();
-
-            return $password;
+            return $generator->generatePassword();
         }
 
         $data = filter_var_array($data, FILTER_SANITIZE_STRING);

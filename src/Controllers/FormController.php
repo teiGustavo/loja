@@ -60,6 +60,8 @@ class FormController extends MainController
       $id = filter_var($data["id"], FILTER_VALIDATE_INT);
 
       $category = (new Category())->findById($id);
+      $callback["messages"] = "";
+
       if ($category) {
          if ($category->destroy()) {
             $callback["remove"] = true;

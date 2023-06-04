@@ -13,7 +13,6 @@ class AuthController extends MainController
         parent::__construct($router, [], $dir);
     }
 
-
     public function signIn(): void
     {
         $params = [
@@ -36,7 +35,7 @@ class AuthController extends MainController
 
     public function logout(): void
     {
-        //Define a sessão ou cookie "loggged" como falso
+        //Define a sessão ou cookie "logged" como falso
         initializeSessions(["token" => "", "logged" => false]); 
                 
         //Retorna o usuário para a tela de login
@@ -56,7 +55,7 @@ class AuthController extends MainController
     //Responsável por validar uma senha
     public function validatePassword(string $password): bool
     {
-        if (filter_var($password, FILTER_DEFAULT) && strlen($password) >= 8) {
+        if (filter_var($password) && strlen($password) >= 8) {
             return true;
         }
 
@@ -65,9 +64,9 @@ class AuthController extends MainController
 
     private function JWT(array $credentials): string
     {
-        $expTime = time() + (1 * 1 * 60 * 60); //(Dias * Horas * Minutos * Segundos)
+        $expTime = time() + (60 * 60); //(Dias * Horas * Minutos * Segundos)
 
-        //Cabeçalho do token (Primeria parte do token JWT)
+        //Cabeçalho do token (Primeira parte do token JWT)
         $header = [
             'alg' => 'HS256',
             'typ' => 'JWT'

@@ -9,7 +9,11 @@ abstract class MainController
     protected Router $router;
     protected Engine $view;
 
-    public function __construct($router, $globals = [], $dir = null)
+    public function __construct(
+        $router,
+        $globals = [],
+        $dir = null
+    )
     {
         //Define o diretório da localização das views
         $dir = $dir ?? dirname(__DIR__, 2) . "/views/";
