@@ -84,12 +84,17 @@ class CustomerController extends MainController
         $customer->datanasc = $data["datanasc"];
         $customer->save();
 
-        $customer->find("", "", "
-            cpf, 
-            nome,
-            email,
-            datacadastro
-        ");
+        $customer = (new Customer())
+            ->find(columns: "
+                id,
+                cpf, 
+                nome,
+                email,
+                date_format(datacadastro, '%d/%m/%Y') as datacadastro
+            ")
+            ->order("id DESC")
+            ->limit(1)
+            ->fetch();
 
         $callback["message"] = "";
         $callback["customer"] = $this->view->render("fragments/customer", ["customer" => $customer]);
@@ -105,19 +110,56 @@ class CustomerController extends MainController
         $customer->destroy();
     }
 
+    public function find(array $data): void
+    {
+        if (empty($data["id"])) {
+            return;
+        }
+
+        $id = filter_var($data["id"], FILTER_VALIDATE_INT);
+
+        $customer = (new Customer())->findById($id);
+
+        $callback["customer"] = $customer->data();
+
+        echo json_encode($callback);
+    }
+
     public function update(array $data): void
     {
-        $customerId = filter_var($data["id"], FILTER_SANITIZE_NUMBER_INT);
-        $customerCpf = filter_var($data["cpf"], FILTER_SANITIZE_STRING);
-        $customerName = filter_var($data["name"], FILTER_SANITIZE_STRING);
-        $customerEmail = filter_var($data["email"], FILTER_SANITIZE_EMAIL);
-        $customerDateBirth = filter_var($data["dateBirth"], FILTER_SANITIZE_STRING);
+        if (empty($data["id"])) {
+            return;
+        }
 
-        $customer = $this->model->findById($customerId);
-        $customer->cpf = $customerCpf;
-        $customer->nome = $customerName;
-        $customer->email = $customerEmail;
-        $customer->datanasc = $customerDateBirth;
+        $id = filter_var($data["id"], FILTER_VALIDATE_INT);
+        $data = filter_var_array($data, FILTER_SANITIZE_STRING);
+
+        if (in_array("", $data)) {
+            $callback["message"] = "Por favor, informe todos os campos!";
+            echo json_encode($callback);
+
+            return;
+        }
+
+        $customer = (new Customer())->findById($id);
+        $customer->cpf = $data["cpf"];
+        $customer->nome = $data["name"];
+        $customer->email = $data["email"];
+        $customer->datanasc = $data["datanasc"];
         $customer->save();
+
+        $customer = (new Customer())
+            ->findById($id, "
+                id, 
+                cpf, 
+                nome, 
+                email, 
+                date_format(datacadastro, '%d/%m/%Y') as datacadastro"
+            );
+
+        $callback["message"] = "";
+        $callback["customer"] = $this->view->render("fragments/customer", ["customer" => $customer]);
+
+        echo json_encode($callback);
     }
 }

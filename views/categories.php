@@ -43,7 +43,7 @@ $v->layout("_theme", $params);
               </div>
               <div class="card-tools">
                 <div class="input-group input-group-sm" style="width: 150px;">
-                  <input type="text" name="table_search" class="form-control float-right" placeholder="Pesquisar">
+                  <input type="text" id="search" name="table_search" class="form-control float-right" placeholder="Pesquisar">
 
                   <div class="input-group-append">
                     <button type="submit" class="btn btn-default">
@@ -156,13 +156,26 @@ $v->layout("_theme", $params);
 
 <?php $v->start("js"); ?>
 <script>
+    $("#search").on("keyup", function () {
+        let val = $(this).val();
+        val = (val.charAt(0).toUpperCase() + val.slice(1));
+        let td = $("td:not(:contains(" + val + "))");
+
+        if (val !== "") {
+            td.hide();
+        } else {
+            $("td").show();
+            $("tr").show();
+        }
+    });
+
   $(function () {
     $("#form_add_categoria").submit(function (e) {
       e.preventDefault();
 
-      var form = $(this);
-      var categories = $(".categories");
-      var feedback = $(".invalid-feedback");
+      let form = $(this);
+      let categories = $(".categories");
+      let feedback = $(".invalid-feedback");
 
       $.ajax({
         url: form.attr("action"),
@@ -196,8 +209,8 @@ $v->layout("_theme", $params);
     $("body").on("click", "[data-update]", function (e) {
       e.preventDefault();
 
-      var data = $(this).data();
-      var div = $(this).parent().parent();
+      let data = $(this).data();
+      let div = $(this).parent().parent();
 
       $.ajax({
         url: data.action,
@@ -214,9 +227,9 @@ $v->layout("_theme", $params);
       $("#form_edit_categoria").submit(function (e) {
         e.preventDefault();
 
-        var form = $(this);
-        var categories = $(".categories");
-        var feedback = $(".invalid-feedback");
+        let form = $(this);
+        let categories = $(".categories");
+        let feedback = $(".invalid-feedback");
 
         $("#btn_salvar_categoria_edit").attr("disabled");
 
@@ -252,8 +265,8 @@ $v->layout("_theme", $params);
     $("body").on("click", "[data-delete]", function (e) {
       e.preventDefault();
 
-      var data = $(this).data();
-      var div = $(this).parent().parent();
+      let data = $(this).data();
+      let div = $(this).parent().parent();
 
       $.post(data.action, data, "json")
         .done(function (callback) {
