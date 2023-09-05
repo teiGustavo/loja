@@ -129,16 +129,12 @@ class OrderController extends MainController
         $order->formapgto = $orderPaymentMethod;
         $order->numparcelas = $orderParcelasQuantity;
 
-        /*  if (!$order->save()) {
-        echo json_encode($order->fail()->getMessage(), JSON_UNESCAPED_UNICODE);
-        exit;
-        } */
-
-        $orderId = $order->save();
+        if (!$order->save()) {
+            echo json_encode($order->fail()->getMessage(), JSON_UNESCAPED_UNICODE);
+            exit;
+        }
 
         saveOrderDetails($orderProducts);
-
-        echo json_encode($orderId, JSON_UNESCAPED_UNICODE);
     }
 
     public function deleteOrder(array $data): void
@@ -169,10 +165,23 @@ class OrderController extends MainController
         $orderPaymentMethod = filter_var($data["paymentMethod"], FILTER_SANITIZE_NUMBER_INT);
         $orderParcelasQuantity = filter_var($data["quantity"], FILTER_SANITIZE_NUMBER_INT);
 
-        $order = $this->model->findById($orderId);
-        $order->cliente = $orderCpf;
+        $params = http_build_query(["cpf" => $orderCpf]);
+        $customer = (new Customer())->find("cpf = :cpf", $params, "id");
+        $customerId = $customer->fetch()->id;
+
+        $order = (new Order())->findById($orderId);
+        $order->cliente = $customerId;
         $order->formapgto = $orderPaymentMethod;
         $order->numparcelas = $orderParcelasQuantity;
-        $order->save();
+
+        var_dump($order->data());
+
+        if (!$order->save()) {
+            echo json_encode($order->fail()->getMessage(), JSON_UNESCAPED_UNICODE);
+            exit;
+        }
+
+        var_dump($order->data());
+
     }
 }

@@ -12,6 +12,7 @@ $router->namespace("Loja\Controllers");
 
 $router->group("", AuthMiddleware::class);
 $router->get("/", "HomeController:index", "home");
+$router->get("/testes", "TestesController:index", "home");
 
 $router->group("/form", AuthMiddleware::class);
 $router->post("/create", "FormController:create", "form.create");
@@ -43,7 +44,7 @@ $router->group("orders", AuthMiddleware::class);
 $router->get("/", "OrderController:index", "orders");
 $router->post("/create", "OrderController:createOrder", "order.create");
 $router->post("/delete", "OrderController:deleteOrder", "order.delete");
-$router->post("/update", "OrderController:updateOrder", "order.delete");
+$router->post("/update", "OrderController:updateOrder", "order.update");
 
 $router->group("payment-method", AuthMiddleware::class);
 $router->get("/", "PaymentController:index", "payment-methods");

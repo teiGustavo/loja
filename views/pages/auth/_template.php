@@ -37,7 +37,8 @@
                 <form class="needs-validation" method="POST" action="<?= $router->route("auth.authenticate"); ?>" id="authForm">
                     <div class="mb-3">
                         <label for="exampleInputEmail1" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="inputEmail" name="email" aria-describedby="emailHelp" required>
+                        <input type="email" class="form-control" id="inputEmail" name="email" value="adm@adm.com"
+                               aria-describedby="emailHelp" required>
                         <div class="valid-feedback" id="valid-feedback">
                             Parece Bom!
                         </div>
@@ -47,7 +48,8 @@
                     </div>
                     <div class="mb-3">
                         <label for="exampleInputPassword1" class="form-label">Senha</label>
-                        <input type="password" class="form-control" name="password" id="inputPassword" required>
+                        <input type="password" class="form-control" name="password" value="12345678"
+                               id="inputPassword" required>
                     </div>
                     <div class="mb-3 form-check">
                         <input type="checkbox" class="form-check-input" id="exampleCheck1">

@@ -6,7 +6,7 @@ use CoffeeCode\DataLayer\DataLayer;
 
 class Order extends DataLayer
 {
-    //Responsável por mapear a tabela "Formas_pagamentos" do BD
+    //Responsável por mapear a tabela "Orders" do BD
     public function __construct()
     {
         //Instancia o construtor da Classe pai (DataLayer)
