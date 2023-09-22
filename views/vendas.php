@@ -117,7 +117,8 @@
                                             </td>
 
                                             <ul id="orderProduct-<?= $order->id; ?>" class="d-none">
-                                                <?php foreach ($order->orderDetails as $orderDetail):
+                                                <?php if ($order->orderDetails != null):
+                                                    foreach ($order->orderDetails as $orderDetail):
                                                     //var_dump($orderDetail->data());
                                                     ?>
 
@@ -125,7 +126,8 @@
                                                         <?= $orderDetail->produto; ?>
                                                     </li>
 
-                                                <?php endforeach; ?>
+                                                <?php endforeach;
+                                                    endif; ?>
                                             </ul>
 
                                             <td id="orderQuantity-<?= $order->id; ?>">
@@ -136,8 +138,10 @@
                                                 <?php
                                                 $orderValue = 0.0;
 
-                                                foreach ($order->orderDetails as $orderDetail) {
-                                                    $orderValue += $orderDetail->valor;
+                                                if ($order->orderDetails != null) {
+                                                    foreach ($order->orderDetails as $orderDetail) {
+                                                        $orderValue += $orderDetail->valor;
+                                                    }
                                                 }
 
                                                 $orderValue = number_format($orderValue, 2, ",", ".");
@@ -544,6 +548,7 @@
             cpf = CPF_EDIT.val();
             paymentMethod = PAYMENT_METHOD_EDIT.val();
             quantity = QUANTITY_PARCELAS_EDIT.val();
+            products = PRODUCTS_EDIT.val();
 
             modifyOrder(id, cpf, paymentMethod, quantity);
 
@@ -555,7 +560,8 @@
                     id: id,
                     cpf: cpf,
                     paymentMethod: paymentMethod,
-                    quantity: quantity
+                    quantity: quantity,
+                    products: products
                 }
             });
         });

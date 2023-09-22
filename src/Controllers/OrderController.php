@@ -112,7 +112,7 @@ class OrderController extends MainController
                 $orderDetails->produto = $orderProduct;
                 $orderDetails->valor = getProductValue($orderProduct);
 
-                updateStorage($orderProduct);
+//                updateStorage($orderProduct);
 
                 if (!$orderDetails->save())
                     echo json_encode($orderDetails->fail()->getMessage(), JSON_UNESCAPED_UNICODE);
@@ -164,6 +164,32 @@ class OrderController extends MainController
         $orderCpf = filter_var($data["cpf"], FILTER_SANITIZE_STRING);
         $orderPaymentMethod = filter_var($data["paymentMethod"], FILTER_SANITIZE_NUMBER_INT);
         $orderParcelasQuantity = filter_var($data["quantity"], FILTER_SANITIZE_NUMBER_INT);
+        $orderProducts = $data["products"];
+
+        function getProductValue(int $productId): float
+        {
+            return (new Product())->findById($productId)->preco;
+        }
+
+        $params = http_build_query(["venda" => $orderId]);
+        $orderDetails = (new OrderDetails())->find("venda = :venda", $params)->fetch(true);
+
+        if ($orderDetails != null) {
+            foreach ($orderDetails as $orderDetail) {
+                $orderDetail->destroy();
+            }
+        }
+
+        foreach ($orderProducts as $orderProduct) {
+            $orderDetails = (new OrderDetails());
+
+            $orderDetails->venda = $orderId;
+            $orderDetails->produto = $orderProduct;
+            $orderDetails->valor = getProductValue($orderProduct);
+
+            if (!$orderDetails->save())
+                echo json_encode($orderDetails->fail()->getMessage(), JSON_UNESCAPED_UNICODE);
+        }
 
         $params = http_build_query(["cpf" => $orderCpf]);
         $customer = (new Customer())->find("cpf = :cpf", $params, "id");
@@ -174,7 +200,7 @@ class OrderController extends MainController
         $order->formapgto = $orderPaymentMethod;
         $order->numparcelas = $orderParcelasQuantity;
 
-        var_dump($order->data());
+        //var_dump($order->data());
 
         if (!$order->save()) {
             echo json_encode($order->fail()->getMessage(), JSON_UNESCAPED_UNICODE);
@@ -182,6 +208,5 @@ class OrderController extends MainController
         }
 
         var_dump($order->data());
-
     }
 }
